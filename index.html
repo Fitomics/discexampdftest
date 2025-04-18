@@ -2,15 +2,21 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Discovery Exam PDF</title>
+  <title>Fitomics Discovery Exam Report</title>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
-  <link href="https://fonts.googleapis.com/css2?family=Glacial+Indifference&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Expletus+Sans:wght@400;700&display=swap" rel="stylesheet">
   <style>
     body {
-      font-family: 'Glacial Indifference', sans-serif;
+      font-family: 'Expletus Sans', sans-serif;
       background-color: #f9f9f9;
       text-align: center;
+      padding: 20px;
+    }
+
+    .page-container {
+      max-width: 1200px;
+      margin: 0 auto;
       padding: 20px;
     }
 
@@ -23,34 +29,44 @@
       background-repeat: no-repeat;
       background-position: center;
       box-shadow: 0 0 10px rgba(0, 0, 0, 0.15);
+      page-break-after: always;
     }
 
     .overlay-text {
       position: absolute;
       color: white;
-      font-size: 30px;
-      transform: translate(-50%, -50%);
-      font-family: 'Glacial Indifference', sans-serif;
+      font-weight: bold;
+      font-family: 'Expletus Sans', sans-serif;
     }
 
-    #cover-name {
+    .client-name {
       top: 29.5%;
       left: 12.4%;
+      font-size: 30px;
+      transform: translate(-50%, -50%);
     }
 
-    #cover-date {
+    .client-date {
       top: 40%;
       left: 12.4%;
+      font-size: 30px;
+      transform: translate(-50%, -50%);
+    }
+
+    .section-header {
+      top: 10%;
+      left: 50%;
+      font-size: 36px;
+      transform: translate(-50%, -50%);
     }
 
     .data-table {
       position: absolute;
-      top: 200px;
+      top: 270px;
       left: 80px;
       width: 700px;
       color: white;
       font-size: 20px;
-      font-family: 'Glacial Indifference', sans-serif;
     }
 
     table {
@@ -59,78 +75,359 @@
     }
 
     td {
-      padding: 10px;
+      padding: 12px;
       border-bottom: 1px solid rgba(255, 255, 255, 0.3);
+    }
+
+    .data-value {
+      text-align: right;
+      font-weight: bold;
+    }
+
+    .chart-container {
+      position: absolute;
+      top: 550px;
+      left: 175px;
+      width: 500px;
+      height: 400px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .chart-container img {
+      max-width: 100%;
+      max-height: 100%;
+      object-fit: contain;
+    }
+
+    .controls {
+      margin: 30px 0;
     }
 
     button {
       padding: 12px 28px;
       font-size: 16px;
-      background-color: #C19962;
+      background-color: #003b59;
       color: white;
       border: none;
       border-radius: 6px;
       cursor: pointer;
+      margin: 0 10px;
+      transition: background-color 0.3s;
+    }
+
+    button:hover {
+      background-color: #005580;
+    }
+
+    .thumbnail-container {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      margin: 20px 0;
+    }
+
+    .thumbnail {
+      width: 150px;
+      height: auto;
+      margin: 10px;
+      border: 2px solid #ccc;
+      border-radius: 4px;
+      transition: transform 0.2s;
+    }
+
+    .thumbnail:hover {
+      transform: scale(1.05);
+    }
+
+    .status {
+      margin-top: 20px;
+      font-size: 16px;
+      color: #555;
+    }
+
+    .data-field {
+      margin-bottom: 10px;
+    }
+
+    .data-field label {
+      display: inline-block;
+      width: 200px;
+      text-align: right;
+      margin-right: 10px;
+    }
+
+    .hide {
+      display: none;
     }
   </style>
 </head>
 <body>
+  <div class="page-container">
+    <h1>Fitomics Discovery Exam Report Generator</h1>
+    
+    <div class="thumbnail-container">
+      <img src="./coverpage.png" class="thumbnail" alt="Cover page">
+      <img src="./backgroundimg.png" class="thumbnail" alt="Background">
+      <img src="./BMI.png" class="thumbnail" alt="BMI chart">
+      <img src="./FMI_FFMI.png" class="thumbnail" alt="Fat Mass Index chart">
+      <img src="./GripStrength.png" class="thumbnail" alt="Grip Strength chart">
+      <img src="./VO2Percentile.png" class="thumbnail" alt="VO2Max chart">
+      <img src="./SBPDBP.png" class="thumbnail" alt="Blood Pressure chart">
+      <img src="./RHR.png" class="thumbnail" alt="Resting Heart Rate chart">
+    </div>
+    
+    <div class="controls">
+      <button id="loadData">Load Data from Form</button>
+      <button id="generatePDF">Generate Full PDF Report</button>
+      <button id="resetData">Reset Data</button>
+    </div>
+    
+    <p class="status" id="status">Please load data from the form first.</p>
 
-  <h2>Discovery Exam PDF Preview</h2>
-
-  <img src="./coverpage.png" style="width: 200px; height: auto;">
-  <img src="./backgroundimg.png" style="width: 200px; height: auto;">
-
-  <!-- Cover Page -->
-  <div id="cover" class="page" style="background-image: url('./coverpage.png'); background-color: #cccccc; background-size: contain;">
-    <div id="cover-name" class="overlay-text">John Doe</div>
-    <div id="cover-date" class="overlay-text">April 22, 2025</div>
-  </div>
-
-  <!-- Data Page -->
-  <div id="page2" class="page" style="background-image: url('./backgroundimg.png');">
-    <div class="data-table">
-      <table>
-        <tbody id="table-body">
-          <!-- Will be populated dynamically -->
-        </tbody>
-      </table>
+    <!-- Pages for PDF generation - initially hidden -->
+    <div id="reportPages" class="hide">
+      <!-- Cover Page -->
+      <div id="coverPage" class="page" style="background-image: url('./coverpage.png');">
+        <div id="clientName" class="overlay-text client-name"></div>
+        <div id="examDate" class="overlay-text client-date"></div>
+      </div>
+      
+      <!-- Body Composition Page -->
+      <div id="bodyCompPage" class="page" style="background-image: url('./backgroundimg.png');">
+        <div class="overlay-text section-header">Body Composition</div>
+        <div class="data-table">
+          <table id="bodyComp-table"></table>
+        </div>
+        <div class="chart-container">
+          <img src="./BMI.png" alt="BMI Chart">
+        </div>
+      </div>
+      
+      <!-- Fat Mass & Fat-Free Mass Index Page -->
+      <div id="fmiFfmiPage" class="page" style="background-image: url('./backgroundimg.png');">
+        <div class="overlay-text section-header">Fat Mass & Fat-Free Mass</div>
+        <div class="data-table">
+          <table id="fmi-ffmi-table"></table>
+        </div>
+        <div class="chart-container">
+          <img src="./FMI_FFMI.png" alt="FMI FFMI Chart">
+        </div>
+      </div>
+      
+      <!-- Strength Metrics Page -->
+      <div id="strengthPage" class="page" style="background-image: url('./backgroundimg.png');">
+        <div class="overlay-text section-header">Strength Assessment</div>
+        <div class="data-table">
+          <table id="strength-table"></table>
+        </div>
+        <div class="chart-container">
+          <img src="./GripStrength.png" alt="Grip Strength Chart">
+        </div>
+      </div>
+      
+      <!-- Cardiovascular Page -->
+      <div id="cardioPage" class="page" style="background-image: url('./backgroundimg.png');">
+        <div class="overlay-text section-header">Cardiovascular Health</div>
+        <div class="data-table">
+          <table id="cardio-table"></table>
+        </div>
+        <div class="chart-container">
+          <img src="./VO2Percentile.png" alt="VO2 Max Chart">
+        </div>
+      </div>
+      
+      <!-- Blood Pressure Page -->
+      <div id="bpPage" class="page" style="background-image: url('./backgroundimg.png');">
+        <div class="overlay-text section-header">Blood Pressure</div>
+        <div class="data-table">
+          <table id="bp-table"></table>
+        </div>
+        <div class="chart-container">
+          <img src="./SBPDBP.png" alt="Blood Pressure Chart">
+        </div>
+      </div>
+      
+      <!-- Nutrition Recommendations Page -->
+      <div id="nutritionPage" class="page" style="background-image: url('./backgroundimg.png');">
+        <div class="overlay-text section-header">Nutrition Recommendations</div>
+        <div class="data-table">
+          <table id="nutrition-table"></table>
+        </div>
+        <div class="chart-container">
+          <img src="./RMRINT.png" alt="Nutrition Chart">
+        </div>
+      </div>
     </div>
   </div>
 
-  <button onclick="generatePDF()">Download Full PDF</button>
-
   <script>
-    // Example form data to populate the table
-    const formData = {
-      "BMI": "24.1",
-      "Body Fat %": "17%",
-      "Fat Mass": "28.2 lbs",
-      "Lean Mass": "137.8 lbs",
-      "RMR": "1,825 kcal/day"
-    };
+    // Client data object to store all form values
+    let clientData = {};
 
-    const tableBody = document.getElementById("table-body");
-    for (const [label, value] of Object.entries(formData)) {
-      const row = document.createElement("tr");
-      row.innerHTML = `<td><strong>${label}</strong></td><td>${value}</td>`;
-      tableBody.appendChild(row);
+    // Function to load data from inputs.html form (using localStorage)
+    document.getElementById('loadData').addEventListener('click', function() {
+      const keys = [
+        'first_name', 'last_name', 'exam_date', 'age', 'gender', 'height', 'weight', 
+        'bodyfat', 'fat_mass', 'fat_free_mass', 'fat_mass_index', 'fat_free_mass_index',
+        'bmi', 'sbp_mmhg', 'dbp_mmhg', 'resting_hr', 'rmr', 'measured_rmr', 
+        'grip_strength_left', 'grip_strength_right', 'grip_strength_avg',
+        'bench_10rm', 'chop_10rm', 'pulldown_10rm', 'dl_10rm',
+        'upper_strength_score', 'lower_strength_score', 'core_strength_score', 'total_strength_score',
+        'six_min_distance', 'cooper_vo2max', 'watts_peak_workload', 'hr_bpm', 'post_heart_rate',
+        'storer_vo2max', 'target_energy', 'protein_value', 'protein_grams', 'protein_calories',
+        'fat_percentage', 'fat_grams', 'fat_calories', 'carb_percentage', 'carb_grams', 
+        'carb_calories', 'fiber_value', 'fiber_grams', 'fluid_ml_per_kg', 'fluid_total',
+        'activity', 'goal', 'predicted_daily_calorie_burn', 'workout_calories', 'workouts_per_week'
+      ];
+
+      // Load data from localStorage
+      keys.forEach(key => {
+        clientData[key] = localStorage.getItem(key) || '';
+      });
+
+      // Display status if data was loaded
+      if (clientData.first_name && clientData.last_name) {
+        document.getElementById('status').innerText = `Data loaded for ${clientData.first_name} ${clientData.last_name}`;
+        document.getElementById('reportPages').classList.remove('hide');
+        populateReportData();
+      } else {
+        document.getElementById('status').innerText = "No data found. Please fill out the form in inputs.html first.";
+      }
+    });
+
+    // Function to populate all report pages with client data
+    function populateReportData() {
+      // Cover page
+      document.getElementById('clientName').textContent = `${clientData.first_name} ${clientData.last_name}`;
+      
+      // Format date for display
+      const examDate = clientData.exam_date ? new Date(clientData.exam_date).toLocaleDateString('en-US', {
+        year: 'numeric', month: 'long', day: 'numeric'
+      }) : 'No date provided';
+      document.getElementById('examDate').textContent = examDate;
+      
+      // Body Composition table
+      const bodyCompTable = document.getElementById('bodyComp-table');
+      bodyCompTable.innerHTML = `
+        <tr><td>Height</td><td class="data-value">${clientData.height} inches</td></tr>
+        <tr><td>Weight</td><td class="data-value">${clientData.weight} lbs</td></tr>
+        <tr><td>Age</td><td class="data-value">${clientData.age} years</td></tr>
+        <tr><td>Gender</td><td class="data-value">${clientData.gender === 'male' ? 'Male' : 'Female'}</td></tr>
+        <tr><td>Body Fat Percentage</td><td class="data-value">${clientData.bodyfat}%</td></tr>
+        <tr><td>Body Mass Index (BMI)</td><td class="data-value">${clientData.bmi} kg/m²</td></tr>
+      `;
+      
+      // Fat Mass & Fat-Free Mass table
+      const fmiFfmiTable = document.getElementById('fmi-ffmi-table');
+      fmiFfmiTable.innerHTML = `
+        <tr><td>Fat Mass</td><td class="data-value">${clientData.fat_mass} lbs</td></tr>
+        <tr><td>Fat-Free Mass</td><td class="data-value">${clientData.fat_free_mass} lbs</td></tr>
+        <tr><td>Fat Mass Index</td><td class="data-value">${clientData.fat_mass_index} kg/m²</td></tr>
+        <tr><td>Fat-Free Mass Index</td><td class="data-value">${clientData.fat_free_mass_index} kg/m²</td></tr>
+      `;
+      
+      // Strength table
+      const strengthTable = document.getElementById('strength-table');
+      strengthTable.innerHTML = `
+        <tr><td>Grip Strength Left</td><td class="data-value">${clientData.grip_strength_left} kg</td></tr>
+        <tr><td>Grip Strength Right</td><td class="data-value">${clientData.grip_strength_right} kg</td></tr>
+        <tr><td>Average Grip Strength</td><td class="data-value">${clientData.grip_strength_avg} kg</td></tr>
+        <tr><td>10RM - Bench Press</td><td class="data-value">${clientData.bench_10rm || 'N/A'}</td></tr>
+        <tr><td>10RM - Chop</td><td class="data-value">${clientData.chop_10rm || 'N/A'}</td></tr>
+        <tr><td>10RM - Pulldown</td><td class="data-value">${clientData.pulldown_10rm || 'N/A'}</td></tr>
+        <tr><td>10RM - Deadlift</td><td class="data-value">${clientData.dl_10rm || 'N/A'}</td></tr>
+      `;
+      
+      // Cardiovascular Health table
+      const cardioTable = document.getElementById('cardio-table');
+      cardioTable.innerHTML = `
+        <tr><td>6-min Walk Distance</td><td class="data-value">${clientData.six_min_distance} miles</td></tr>
+        <tr><td>Cooper VO2 Max</td><td class="data-value">${clientData.cooper_vo2max} ml/kg/min</td></tr>
+        <tr><td>Storer VO2 Max</td><td class="data-value">${clientData.storer_vo2max} ml/kg/min</td></tr>
+        <tr><td>Peak Workload</td><td class="data-value">${clientData.watts_peak_workload} watts</td></tr>
+      `;
+      
+      // Blood Pressure table
+      const bpTable = document.getElementById('bp-table');
+      bpTable.innerHTML = `
+        <tr><td>Systolic Blood Pressure</td><td class="data-value">${clientData.sbp_mmhg} mmHg</td></tr>
+        <tr><td>Diastolic Blood Pressure</td><td class="data-value">${clientData.dbp_mmhg} mmHg</td></tr>
+        <tr><td>Resting Heart Rate</td><td class="data-value">${clientData.resting_hr} bpm</td></tr>
+        <tr><td>Heart Rate Recovery (1-min)</td><td class="data-value">${clientData.post_heart_rate} bpm</td></tr>
+      `;
+      
+      // Nutrition table
+      const nutritionTable = document.getElementById('nutrition-table');
+      nutritionTable.innerHTML = `
+        <tr><td>Resting Metabolic Rate</td><td class="data-value">${clientData.rmr} kcal/day</td></tr>
+        <tr><td>Daily Calorie Target</td><td class="data-value">${clientData.target_energy} kcal</td></tr>
+        <tr><td>Protein</td><td class="data-value">${clientData.protein_grams}</td></tr>
+        <tr><td>Fat</td><td class="data-value">${clientData.fat_grams}</td></tr>
+        <tr><td>Carbohydrates</td><td class="data-value">${clientData.carb_grams}</td></tr>
+        <tr><td>Fiber</td><td class="data-value">${clientData.fiber_grams}</td></tr>
+        <tr><td>Daily Fluid Intake</td><td class="data-value">${clientData.fluid_total}</td></tr>
+      `;
     }
-
-    async function generatePDF() {
+    
+    // Function to generate PDF with all pages
+    document.getElementById('generatePDF').addEventListener('click', async function() {
+      if (!clientData.first_name) {
+        document.getElementById('status').innerText = "Please load client data before generating PDF";
+        return;
+      }
+      
+      document.getElementById('status').innerText = "Generating PDF, please wait...";
+      
+      // Initialize PDF
       const { jsPDF } = window.jspdf;
       const pdf = new jsPDF('portrait', 'pt', 'letter');
-
-      const coverCanvas = await html2canvas(document.getElementById("cover"), { scale: 2 });
-      const page2Canvas = await html2canvas(document.getElementById("page2"), { scale: 2 });
-
-      pdf.addImage(coverCanvas.toDataURL("image/png"), 'PNG', 0, 0, 612, 792);
-      pdf.addPage();
-      pdf.addImage(page2Canvas.toDataURL("image/png"), 'PNG', 0, 0, 612, 792);
-
-      pdf.save("discovery-exam-report.pdf");
-    }
+      
+      // Get all pages
+      const pages = document.querySelectorAll('.page');
+      
+      // Process each page
+      for (let i = 0; i < pages.length; i++) {
+        const page = pages[i];
+        
+        // Generate canvas for the page
+        const canvas = await html2canvas(page, { 
+          scale: 2, 
+          useCORS: true,
+          allowTaint: true,
+          backgroundColor: null
+        });
+        
+        // Add page to PDF (first page doesn't need addPage)
+        if (i > 0) {
+          pdf.addPage();
+        }
+        
+        // Add the image to the PDF
+        pdf.addImage(
+          canvas.toDataURL('image/png'),
+          'PNG',
+          0, 
+          0,
+          612, // Letter width in points
+          792  // Letter height in points
+        );
+      }
+      
+      // Save the PDF with client name
+      const safeName = `${clientData.first_name}_${clientData.last_name}`.replace(/[^a-z0-9]/gi, '_').toLowerCase();
+      pdf.save(`discovery_exam_${safeName}.pdf`);
+      
+      document.getElementById('status').innerText = "PDF generated successfully!";
+    });
+    
+    // Function to reset data
+    document.getElementById('resetData').addEventListener('click', function() {
+      clientData = {};
+      document.getElementById('status').innerText = "Data has been reset.";
+      document.getElementById('reportPages').classList.add('hide');
+    });
   </script>
-
 </body>
 </html>
