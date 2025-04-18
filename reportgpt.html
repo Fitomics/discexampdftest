@@ -123,8 +123,8 @@
 <div id="pdfWrapper">
   <div class="page">
     <div class="center-title">Discovery Exam Report</div>
-    <input class="meta-field" id="name" placeholder="Enter Name">
-    <input class="meta-field" id="date" placeholder="Enter Date">
+    <input class="meta-field" placeholder="Enter Name">
+    <input class="meta-field" placeholder="Enter Date">
   </div>
 
   <div class="page">
@@ -145,90 +145,9 @@
       </table>
     </div>
   </div>
-  <div class="page">
-    <div class="title-text">Body Mass Index</div>
-    <div class="graph-container">
-      <img class="graph-image" src="https://raw.githubusercontent.com/Fitomics/discexampdftest/main/BMI.png" alt="BMI Graph">
-      <div class="arrow" style="top: 60%; left: 30%;"></div>
-      <div class="arrow" style="top: 60%; left: 50%;"></div>
-      <div class="arrow" style="top: 60%; left: 70%;"></div>
-      <input class="value-field" placeholder="24.3"><span class="unit-label">kg/m²</span>
-      <input class="data-field" placeholder="Type notes here...">
-    </div>
-  </div>
 
-  <div class="page">
-    <div class="title-text">Fat Mass Index / Fat-Free Mass Index</div>
-    <div class="graph-container">
-      <img class="graph-image" src="https://raw.githubusercontent.com/Fitomics/discexampdftest/main/FMI_FFMI.png" alt="FMI FFMI Graph">
-      <div class="arrow" style="top: 60%; left: 40%;"></div>
-      <div class="arrow" style="top: 60%; left: 60%;"></div>
-      <input class="value-field" placeholder="6.2"><span class="unit-label">kg/m²</span>
-      <input class="value-field" placeholder="17.8"><span class="unit-label">kg/m²</span>
-      <input class="data-field" placeholder="Type notes here...">
-    </div>
-  </div>
-
-  <div class="page">
-    <div class="title-text">Grip Strength</div>
-    <div class="graph-container">
-      <img class="graph-image" src="https://raw.githubusercontent.com/Fitomics/discexampdftest/main/GripStrength.png" alt="Grip Strength Graph">
-      <div class="arrow" style="top: 60%; left: 50%;"></div>
-      <input class="value-field" placeholder="72.5"><span class="unit-label">kg</span>
-      <input class="data-field" placeholder="Type notes here...">
-    </div>
-  </div>
-
-  <div class="page">
-    <div class="title-text">Heart Rate Recovery</div>
-    <div class="graph-container">
-      <img class="graph-image" src="https://raw.githubusercontent.com/Fitomics/discexampdftest/main/HRR.png" alt="HRR Graph">
-      <div class="arrow" style="top: 60%; left: 50%;"></div>
-      <input class="value-field" placeholder="26"><span class="unit-label">bpm</span>
-      <input class="data-field" placeholder="Type notes here...">
-    </div>
-  </div>
-
-  <div class="page">
-    <div class="title-text">Resting Heart Rate</div>
-    <div class="graph-container">
-      <img class="graph-image" src="https://raw.githubusercontent.com/Fitomics/discexampdftest/main/RHR.png" alt="RHR Graph">
-      <div class="arrow" style="top: 60%; left: 50%;"></div>
-      <input class="value-field" placeholder="62"><span class="unit-label">bpm</span>
-      <input class="data-field" placeholder="Type notes here...">
-    </div>
-  </div>
-
-  <div class="page">
-    <div class="title-text">Resting Metabolic Rate</div>
-    <div class="graph-container">
-      <img class="graph-image" src="https://raw.githubusercontent.com/Fitomics/discexampdftest/main/RMRINT.png" alt="RMR Graph">
-      <div class="arrow" style="top: 60%; left: 50%;"></div>
-      <input class="value-field" placeholder="1850"><span class="unit-label">kcal/day</span>
-      <input class="data-field" placeholder="Type notes here...">
-    </div>
-  </div>
-  <div class="page">
-    <div class="title-text">Systolic / Diastolic Blood Pressure</div>
-    <div class="graph-container">
-      <img class="graph-image" src="https://raw.githubusercontent.com/Fitomics/discexampdftest/main/SBPDBP.png" alt="Blood Pressure Graph">
-      <div class="arrow" style="top: 60%; left: 50%;"></div>
-      <input class="value-field" placeholder="118"><span class="unit-label">mmHg</span>
-      <input class="value-field" placeholder="76"><span class="unit-label">mmHg</span>
-      <input class="data-field" placeholder="Type notes here...">
-    </div>
-  </div>
-
-  <div class="page">
-    <div class="title-text">VO<sub>2</sub> Max Percentile</div>
-    <div class="graph-container">
-      <img class="graph-image" src="https://raw.githubusercontent.com/Fitomics/discexampdftest/main/VO2Percentile.png" alt="VO2 Graph">
-      <div class="arrow" style="top: 60%; left: 50%;"></div>
-      <input class="value-field" placeholder="78"><span class="unit-label">%</span>
-      <input class="data-field" placeholder="Type notes here...">
-    </div>
-  </div>
-
+  <!-- Insert other pages here -->
+  <!-- Example: Functional Strength -->
   <div class="page">
     <div class="title-text">Functional Strength Scores</div>
     <div class="graph-container">
@@ -237,25 +156,110 @@
       <input class="value-field" placeholder="Lower Strength Score"><span class="unit-label">score</span>
       <input class="value-field" placeholder="Upper Strength Score"><span class="unit-label">score</span>
       <img class="graph-image" src="https://raw.githubusercontent.com/Fitomics/discexampdftest/main/bellcurve.png" alt="Functional Strength Bell Curve">
-      <div class="arrow" style="top: 60%; left: 50%;"></div>
       <input class="data-field" placeholder="Type notes here...">
     </div>
   </div>
 
   <div class="page">
-    <div class="title-text">Initial Nutrition Targets</div>
-    <div class="table-wrapper">
-      <table>
-        <tr><th>Target</th><th>Value</th></tr>
-        <tr><td>Energy Target</td><td><input class="value-field" placeholder=""><span class="unit-label">kcal/day</span></td></tr>
-        <tr><td>Protein Target</td><td><input class="value-field" placeholder=""><span class="unit-label">g/day</span></td></tr>
-        <tr><td>Carbohydrate Target</td><td><input class="value-field" placeholder=""><span class="unit-label">g/day</span></td></tr>
-        <tr><td>Fat Target</td><td><input class="value-field" placeholder=""><span class="unit-label">g/day</span></td></tr>
-        <tr><td>Fiber Target</td><td><input class="value-field" placeholder=""><span class="unit-label">g/day</span></td></tr>
-        <tr><td>Fluid Target</td><td><input class="value-field" placeholder=""><span class="unit-label">ml/day</span></td></tr>
-      </table>
-    </div>
+  <div class="title-text">Body Mass Index</div>
+  <div class="graph-container">
+    <img class="graph-image" src="https://raw.githubusercontent.com/Fitomics/discexampdftest/main/BMI.png" alt="BMI Graph">
+    <div class="arrow" style="top: 60%; left: 30%;"></div>
+    <div class="arrow" style="top: 60%; left: 50%;"></div>
+    <div class="arrow" style="top: 60%; left: 70%;"></div>
+    <input class="value-field" placeholder="24.3"><span class="unit-label">kg/m²</span>
+    <input class="data-field" placeholder="Type notes here...">
   </div>
+</div>
+
+<div class="page">
+  <div class="title-text">Fat Mass Index / Fat-Free Mass Index</div>
+  <div class="graph-container">
+    <img class="graph-image" src="https://raw.githubusercontent.com/Fitomics/discexampdftest/main/FMI_FFMI.png" alt="FMI FFMI Graph">
+    <div class="arrow" style="top: 60%; left: 40%;"></div>
+    <div class="arrow" style="top: 60%; left: 60%;"></div>
+    <input class="value-field" placeholder="6.2"><span class="unit-label">kg/m²</span>
+    <input class="value-field" placeholder="17.8"><span class="unit-label">kg/m²</span>
+    <input class="data-field" placeholder="Type notes here...">
+  </div>
+</div>
+
+<div class="page">
+  <div class="title-text">Grip Strength</div>
+  <div class="graph-container">
+    <img class="graph-image" src="https://raw.githubusercontent.com/Fitomics/discexampdftest/main/GripStrength.png" alt="Grip Strength Graph">
+    <div class="arrow" style="top: 60%; left: 50%;"></div>
+    <input class="value-field" placeholder="72.5"><span class="unit-label">kg</span>
+    <input class="data-field" placeholder="Type notes here...">
+  </div>
+</div>
+
+<div class="page">
+  <div class="title-text">Heart Rate Recovery</div>
+  <div class="graph-container">
+    <img class="graph-image" src="https://raw.githubusercontent.com/Fitomics/discexampdftest/main/HRR.png" alt="HRR Graph">
+    <div class="arrow" style="top: 60%; left: 50%;"></div>
+    <input class="value-field" placeholder="26"><span class="unit-label">bpm</span>
+    <input class="data-field" placeholder="Type notes here...">
+  </div>
+</div>
+
+<div class="page">
+  <div class="title-text">Resting Heart Rate</div>
+  <div class="graph-container">
+    <img class="graph-image" src="https://raw.githubusercontent.com/Fitomics/discexampdftest/main/RHR.png" alt="RHR Graph">
+    <div class="arrow" style="top: 60%; left: 50%;"></div>
+    <input class="value-field" placeholder="62"><span class="unit-label">bpm</span>
+    <input class="data-field" placeholder="Type notes here...">
+  </div>
+</div>
+
+<div class="page">
+  <div class="title-text">Resting Metabolic Rate</div>
+  <div class="graph-container">
+    <img class="graph-image" src="https://raw.githubusercontent.com/Fitomics/discexampdftest/main/RMRINT.png" alt="RMR Graph">
+    <div class="arrow" style="top: 60%; left: 50%;"></div>
+    <input class="value-field" placeholder="1850"><span class="unit-label">kcal/day</span>
+    <input class="data-field" placeholder="Type notes here...">
+  </div>
+</div>
+
+<div class="page">
+  <div class="title-text">Systolic / Diastolic Blood Pressure</div>
+  <div class="graph-container">
+    <img class="graph-image" src="https://raw.githubusercontent.com/Fitomics/discexampdftest/main/SBPDBP.png" alt="Blood Pressure Graph">
+    <div class="arrow" style="top: 60%; left: 50%;"></div>
+    <input class="value-field" placeholder="118"><span class="unit-label">mmHg</span>
+    <input class="value-field" placeholder="76"><span class="unit-label">mmHg</span>
+    <input class="data-field" placeholder="Type notes here...">
+  </div>
+</div>
+
+<div class="page">
+  <div class="title-text">VO<sub>2</sub> Max Percentile</div>
+  <div class="graph-container">
+    <img class="graph-image" src="https://raw.githubusercontent.com/Fitomics/discexampdftest/main/VO2Percentile.png" alt="VO2 Graph">
+    <div class="arrow" style="top: 60%; left: 50%;"></div>
+    <input class="value-field" placeholder="78"><span class="unit-label">%</span>
+    <input class="data-field" placeholder="Type notes here...">
+  </div>
+</div>
+
+<div class="page">
+  <div class="title-text">Initial Nutrition Targets</div>
+  <div class="table-wrapper">
+    <table>
+      <tr><th>Target</th><th>Value</th></tr>
+      <tr><td>Energy Target</td><td><input class='value-field' placeholder=''><span class='unit-label'>kcal/day</span></td></tr>
+      <tr><td>Protein Target</td><td><input class='value-field' placeholder=''><span class='unit-label'>g/day</span></td></tr>
+      <tr><td>Carbohydrate Target</td><td><input class='value-field' placeholder=''><span class='unit-label'>g/day</span></td></tr>
+      <tr><td>Fat Target</td><td><input class='value-field' placeholder=''><span class='unit-label'>g/day</span></td></tr>
+      <tr><td>Fiber Target</td><td><input class='value-field' placeholder=''><span class='unit-label'>g/day</span></td></tr>
+      <tr><td>Fluid Target</td><td><input class='value-field' placeholder=''><span class='unit-label'>ml/day</span></td></tr>
+    </table>
+  </div>
+</div>
+
 </div>
 
 <button onclick="generatePDF()">Download PDF Preview</button>
@@ -266,10 +270,6 @@
     const pdf = new jsPDF('portrait', 'pt', 'letter');
     const pages = document.getElementById('pdfWrapper').children;
 
-    const name = document.getElementById('name')?.value || 'Discovery_Exam';
-    const date = document.getElementById('date')?.value || new Date().toISOString().split('T')[0];
-    const filename = name.replace(/\\s+/g, '_') + '_' + date + '.pdf';
-
     for (let i = 0; i < pages.length; i++) {
       const canvas = await html2canvas(pages[i], { scale: 2 });
       const imgData = canvas.toDataURL('image/png');
@@ -277,29 +277,8 @@
       if (i < pages.length - 1) pdf.addPage();
     }
 
-    pdf.save(filename);
+    pdf.save('discovery_exam_report.pdf');
   }
-
-  // Enable drag for all arrows
-  window.onload = () => {
-    document.querySelectorAll('.arrow').forEach((arrow) => {
-      interact(arrow).draggable({
-        modifiers: [
-          interact.modifiers.restrictRect({ restriction: 'parent', endOnly: true })
-        ],
-        listeners: {
-          move(event) {
-            const target = event.target;
-            const x = (parseFloat(target.getAttribute('data-x')) || 0) + event.dx;
-            const y = (parseFloat(target.getAttribute('data-y')) || 0) + event.dy;
-            target.style.transform = `translate(${x}px, ${y}px)`;
-            target.setAttribute('data-x', x);
-            target.setAttribute('data-y', y);
-          }
-        }
-      });
-    });
-  };
 </script>
 
 </body>
