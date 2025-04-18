@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Discovery Exam PDF</title>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+  <style>
+    #page1 {
+      position: relative;
+      width: 2550px;
+      height: 3300px;
+      background-image: url('https://raw.githubusercontent.com/YOUR_USERNAME/YOUR_REPO/main/page1.png');
+      background-size: cover;
+      font-family: Helvetica, sans-serif;
+    }
+
+    .overlay-text {
+      position: absolute;
+      color: black;
+      font-size: 32px;
+      font-weight: normal;
+    }
+
+    #name {
+      left: 237px;
+      top: 697px;
+    }
+
+    #date {
+      left: 231px;
+      top: 961px;
+    }
+  </style>
+</head>
+<body>
+
+  <div id="page1">
+    <div id="name" class="overlay-text"></div>
+    <div id="date" class="overlay-text"></div>
+  </div>
+
+  <button onclick="generatePDF()">Download PDF</button>
+
+  <script>
+    async function generatePDF() {
+      // Replace with your form inputs or dynamic data
+      const name = "John Doe";
+      const date = "April 18, 2025";
+
+      // Inject text
+      document.getElementById('name').textContent = name;
+      document.getElementById('date').textContent = date;
+
+      // Convert to canvas
+      const pageElement = document.getElementById('page1');
+      const canvas = await html2canvas(pageElement, { scale: 1 });
+
+      // Generate PDF
+      const { jsPDF } = window.jspdf;
+      const pdf = new jsPDF('portrait', 'px', [2550, 3300]);
+
+      const imgData = canvas.toDataURL('image/png');
+      pdf.addImage(imgData, 'PNG', 0, 0, 2550, 3300);
+
+      pdf.save('discovery-exam-page1.pdf');
+    }
+  </script>
+
+</body>
+</html>
