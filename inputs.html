@@ -693,6 +693,22 @@
         storerElem.classList.remove('calc-available');
         storerElem.classList.add('calc-unavailable');
       }
+
+      // Add this at the end of calculateOtherValues() function
+      function saveTableValueToStorage(id) {
+        const elem = document.getElementById(id);
+        if (elem && elem.textContent) {
+          saveToDatabase(id, elem.textContent);
+        }
+      }
+
+      // Save all table values
+      const tableFields = ['target_energy', 'protein_value', 'protein_grams', 'protein_calories', 
+                         'fat_percentage', 'fat_grams', 'fat_calories', 'carb_percentage', 
+                         'carb_grams', 'carb_calories', 'fiber_value', 'fiber_grams', 
+                         'fluid_ml_per_kg', 'fluid_total'];
+
+      tableFields.forEach(saveTableValueToStorage);
     }
   
     /**
