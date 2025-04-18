@@ -5,102 +5,129 @@
   <title>Discovery Exam PDF</title>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Glacial+Indifference&display=swap" rel="stylesheet">
   <style>
     body {
-      margin: 0;
+      font-family: 'Glacial Indifference', sans-serif;
+      background-color: #f9f9f9;
+      text-align: center;
       padding: 20px;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
     }
-    
-    .page-container {
-      width: 100%;
-      max-width: 100%;
-      overflow: auto;
-      margin-bottom: 20px;
-    }
-    
-    #page1 {
+
+    .page {
       position: relative;
-      width: 2550px;
-      height: 3300px;
-      background-image: url('DiscoExam1.png');
+      width: 850px;
+      height: 1100px;
+      margin: 20px auto;
       background-size: cover;
-      font-family: Helvetica, sans-serif;
-      transform-origin: top left;
-      transform: scale(0.25); /* Scale down for preview */
-      margin-bottom: 20px;
+      background-repeat: no-repeat;
+      background-position: center;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.15);
     }
 
     .overlay-text {
       position: absolute;
-      color: black;
-      font-size: 32px;
-      font-weight: normal;
+      color: white;
+      font-size: 30px;
+      transform: translate(-50%, -50%);
+      font-family: 'Glacial Indifference', sans-serif;
     }
 
-    #name {
-      left: 237px;
-      top: 697px;
+    #cover-name {
+      top: 29.5%;
+      left: 12.4%;
     }
 
-    #date {
-      left: 231px;
-      top: 961px;
+    #cover-date {
+      top: 40%;
+      left: 12.4%;
     }
-    
+
+    .data-table {
+      position: absolute;
+      top: 200px;
+      left: 80px;
+      width: 700px;
+      color: white;
+      font-size: 20px;
+      font-family: 'Glacial Indifference', sans-serif;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+
+    td {
+      padding: 10px;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.3);
+    }
+
     button {
-      padding: 10px 20px;
+      padding: 12px 28px;
       font-size: 16px;
-      margin-top: 20px;
+      background-color: #C19962;
+      color: white;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
     }
   </style>
 </head>
 <body>
-  <div class="page-container">
-    <div id="page1">
-      <div id="name" class="overlay-text"></div>
-      <div id="date" class="overlay-text"></div>
+
+  <h2>Discovery Exam PDF Preview</h2>
+
+  <!-- Cover Page -->
+  <div id="cover" class="page" style="background-image: url('https://raw.githubusercontent.com/Fitomics/discexampdftest/main/1.png');">
+    <div id="cover-name" class="overlay-text">John Doe</div>
+    <div id="cover-date" class="overlay-text">April 22, 2025</div>
+  </div>
+
+  <!-- Data Page -->
+  <div id="page2" class="page" style="background-image: url('https://raw.githubusercontent.com/Fitomics/discexampdftest/main/2.png');">
+    <div class="data-table">
+      <table>
+        <tbody id="table-body">
+          <!-- Will be populated dynamically -->
+        </tbody>
+      </table>
     </div>
   </div>
 
-  <button onclick="generatePDF()">Download PDF</button>
+  <button onclick="generatePDF()">Download Full PDF</button>
 
   <script>
-    // Initialize preview with sample data
-    document.getElementById('name').textContent = "John Doe";
-    document.getElementById('date').textContent = "April 18, 2025";
-    
+    // Example form data to populate the table
+    const formData = {
+      "BMI": "24.1",
+      "Body Fat %": "17%",
+      "Fat Mass": "28.2 lbs",
+      "Lean Mass": "137.8 lbs",
+      "RMR": "1,825 kcal/day"
+    };
+
+    const tableBody = document.getElementById("table-body");
+    for (const [label, value] of Object.entries(formData)) {
+      const row = document.createElement("tr");
+      row.innerHTML = `<td><strong>${label}</strong></td><td>${value}</td>`;
+      tableBody.appendChild(row);
+    }
+
     async function generatePDF() {
-      // Replace with your form inputs or dynamic data
-      const name = "John Doe";
-      const date = "April 18, 2025";
-
-      // Inject text
-      document.getElementById('name').textContent = name;
-      document.getElementById('date').textContent = date;
-
-      // Convert to canvas
-      const pageElement = document.getElementById('page1');
-      
-      // Temporarily remove scaling for PDF generation
-      pageElement.style.transform = 'scale(1)';
-      
-      const canvas = await html2canvas(pageElement, { scale: 1 });
-      
-      // Restore scaling for display
-      pageElement.style.transform = 'scale(0.25)';
-
-      // Generate PDF
       const { jsPDF } = window.jspdf;
-      const pdf = new jsPDF('portrait', 'px', [2550, 3300]);
+      const pdf = new jsPDF('portrait', 'pt', 'letter');
 
-      const imgData = canvas.toDataURL('image/png');
-      pdf.addImage(imgData, 'PNG', 0, 0, 2550, 3300);
+      const coverCanvas = await html2canvas(document.getElementById("cover"), { scale: 2 });
+      const page2Canvas = await html2canvas(document.getElementById("page2"), { scale: 2 });
 
-      pdf.save('discovery-exam-page1.pdf');
+      pdf.addImage(coverCanvas.toDataURL("image/png"), 'PNG', 0, 0, 612, 792);
+      pdf.addPage();
+      pdf.addImage(page2Canvas.toDataURL("image/png"), 'PNG', 0, 0, 612, 792);
+
+      pdf.save("discovery-exam-report.pdf");
     }
   </script>
+
 </body>
 </html>
