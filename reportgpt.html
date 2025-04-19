@@ -5,16 +5,15 @@
   <title>Discovery Exam PDF</title>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/interact.js/1.10.11/interact.min.js"></script>
   <link href="https://fonts.googleapis.com/css2?family=Glacial+Indifference&display=swap" rel="stylesheet">
   <style>
     body {
       font-family: 'Glacial Indifference', sans-serif;
       margin: 0;
       padding: 20px;
-      background: #f7f9fb;
+      background: #ffffff;
       text-align: center;
-      color: #1B263B;
+      color: #00263d;
     }
     .page {
       position: relative;
@@ -22,9 +21,9 @@
       max-width: 850px;
       aspect-ratio: 2550 / 3300;
       margin: 30px auto;
-      background: white;
+      background: #ffffff;
       border-radius: 12px;
-      box-shadow: 0 10px 40px rgba(0,0,0,0.1);
+      box-shadow: 0 8px 24px rgba(0,38,61,0.15);
       padding-top: 100px;
     }
     .title-text {
@@ -33,14 +32,6 @@
       font-weight: bold;
       text-align: center;
     }
-    .center-title {
-      position: absolute;
-      top: 35%;
-      left: 50%;
-      transform: translate(-50%, -50%);
-      font-size: 48px;
-      font-weight: bold;
-    }
     .graph-container {
       position: relative;
       width: 90%;
@@ -48,34 +39,14 @@
       padding: 24px;
       border-radius: 10px;
       background-color: #ffffff;
-      border: 1px solid #c4c7cc;
+      border: 1px solid #e4ac61;
     }
     .graph-image {
       width: 100%;
       max-height: 500px;
       object-fit: contain;
       border-radius: 6px;
-      border: 1px solid #c4c7cc;
-    }
-    .arrow {
-      position: absolute;
-      width: 28px;
-      height: 28px;
-      background-color: #C19962;
-      clip-path: polygon(50% 100%, 0 0, 100% 0);
-      transform: rotate(180deg);
-      z-index: 11;
-    }
-    .arrow::after {
-      content: '';
-      position: absolute;
-      bottom: 100%;
-      left: 50%;
-      transform: translateX(-50%);
-      width: 2px;
-      height: 40px;
-      background-color: #C19962;
-      z-index: -1;
+      border: 1px solid #e4ac61;
     }
     .data-field, .value-field, .meta-field {
       font-size: 16px;
@@ -103,14 +74,14 @@
     }
     .table-wrapper th, .table-wrapper td {
       padding: 10px;
-      border: 1px solid #ccc;
+      border: 1px solid #c19962;
       text-align: left;
     }
     button {
       margin-top: 20px;
       padding: 12px 28px;
       font-size: 16px;
-      background-color: #1B263B;
+      background-color: #c19962;
       color: white;
       border: none;
       border-radius: 6px;
@@ -119,54 +90,36 @@
   </style>
 </head>
 <body>
+  <div id="pdfWrapper">
+    <div class="page">
+  <div class="title-text">Discovery Exam Report</div>
+  <input class="meta-field" placeholder="Enter Name">
+  <input class="meta-field" placeholder="Enter Date">
+</div>
 
-<div id="pdfWrapper">
-  <div class="page">
-    <div class="center-title">Discovery Exam Report</div>
-    <input class="meta-field" placeholder="Enter Name">
-    <input class="meta-field" placeholder="Enter Date">
+<div class="page">
+  <div class="title-text">Summary Table</div>
+  <div class="table-wrapper">
+    <table style="font-size: 14px;">
+      <tr><th>Variable</th><th>Value</th></tr>
+      <tr><td>Body Mass Index (BMI)</td><td>24.3 kg/m²</td></tr>
+      <tr><td>Fat Mass Index (FMI)</td><td>6.2 kg/m²</td></tr>
+      <tr><td>Fat-Free Mass Index (FFMI)</td><td>17.8 kg/m²</td></tr>
+      <tr><td>Grip Strength</td><td>72.5 kg</td></tr>
+      <tr><td>Heart Rate Recovery</td><td>26 bpm</td></tr>
+      <tr><td>Resting Heart Rate</td><td>62 bpm</td></tr>
+      <tr><td>Resting Metabolic Rate</td><td>1850 kcal/day</td></tr>
+      <tr><td>Systolic BP</td><td>118 mmHg</td></tr>
+      <tr><td>Diastolic BP</td><td>76 mmHg</td></tr>
+      <tr><td>VO₂ Max Percentile</td><td>78%</td></tr>
+    </table>
   </div>
+</div>
 
-  <div class="page">
-    <div class="title-text">Exam Summary Table</div>
-    <div class="table-wrapper">
-      <table>
-        <tr><th>Variable</th><th>Value</th></tr>
-        <tr><td>Body Mass Index (BMI)</td><td>24.3 kg/m²</td></tr>
-        <tr><td>Fat Mass Index (FMI)</td><td>6.2 kg/m²</td></tr>
-        <tr><td>Fat-Free Mass Index (FFMI)</td><td>17.8 kg/m²</td></tr>
-        <tr><td>Grip Strength</td><td>72.5 kg</td></tr>
-        <tr><td>Heart Rate Recovery</td><td>26 bpm</td></tr>
-        <tr><td>Resting Heart Rate</td><td>62 bpm</td></tr>
-        <tr><td>Resting Metabolic Rate</td><td>1850 kcal/day</td></tr>
-        <tr><td>Systolic BP</td><td>118 mmHg</td></tr>
-        <tr><td>Diastolic BP</td><td>76 mmHg</td></tr>
-        <tr><td>VO₂ Max Percentile</td><td>78%</td></tr>
-      </table>
-    </div>
-  </div>
-
-  <!-- Insert other pages here -->
-  <!-- Example: Functional Strength -->
-  <div class="page">
-    <div class="title-text">Functional Strength Scores</div>
-    <div class="graph-container">
-      <input class="value-field" placeholder="Total Strength Score"><span class="unit-label">score</span>
-      <input class="value-field" placeholder="Core Strength Score"><span class="unit-label">score</span>
-      <input class="value-field" placeholder="Lower Strength Score"><span class="unit-label">score</span>
-      <input class="value-field" placeholder="Upper Strength Score"><span class="unit-label">score</span>
-      <img class="graph-image" src="https://raw.githubusercontent.com/Fitomics/discexampdftest/main/bellcurve.png" alt="Functional Strength Bell Curve">
-      <input class="data-field" placeholder="Type notes here...">
-    </div>
-  </div>
-
-  <div class="page">
+<div class="page">
   <div class="title-text">Body Mass Index</div>
   <div class="graph-container">
     <img class="graph-image" src="https://raw.githubusercontent.com/Fitomics/discexampdftest/main/BMI.png" alt="BMI Graph">
-    <div class="arrow" style="top: 60%; left: 30%;"></div>
-    <div class="arrow" style="top: 60%; left: 50%;"></div>
-    <div class="arrow" style="top: 60%; left: 70%;"></div>
     <input class="value-field" placeholder="24.3"><span class="unit-label">kg/m²</span>
     <input class="data-field" placeholder="Type notes here...">
   </div>
@@ -176,8 +129,6 @@
   <div class="title-text">Fat Mass Index / Fat-Free Mass Index</div>
   <div class="graph-container">
     <img class="graph-image" src="https://raw.githubusercontent.com/Fitomics/discexampdftest/main/FMI_FFMI.png" alt="FMI FFMI Graph">
-    <div class="arrow" style="top: 60%; left: 40%;"></div>
-    <div class="arrow" style="top: 60%; left: 60%;"></div>
     <input class="value-field" placeholder="6.2"><span class="unit-label">kg/m²</span>
     <input class="value-field" placeholder="17.8"><span class="unit-label">kg/m²</span>
     <input class="data-field" placeholder="Type notes here...">
@@ -188,7 +139,6 @@
   <div class="title-text">Grip Strength</div>
   <div class="graph-container">
     <img class="graph-image" src="https://raw.githubusercontent.com/Fitomics/discexampdftest/main/GripStrength.png" alt="Grip Strength Graph">
-    <div class="arrow" style="top: 60%; left: 50%;"></div>
     <input class="value-field" placeholder="72.5"><span class="unit-label">kg</span>
     <input class="data-field" placeholder="Type notes here...">
   </div>
@@ -198,7 +148,6 @@
   <div class="title-text">Heart Rate Recovery</div>
   <div class="graph-container">
     <img class="graph-image" src="https://raw.githubusercontent.com/Fitomics/discexampdftest/main/HRR.png" alt="HRR Graph">
-    <div class="arrow" style="top: 60%; left: 50%;"></div>
     <input class="value-field" placeholder="26"><span class="unit-label">bpm</span>
     <input class="data-field" placeholder="Type notes here...">
   </div>
@@ -208,7 +157,6 @@
   <div class="title-text">Resting Heart Rate</div>
   <div class="graph-container">
     <img class="graph-image" src="https://raw.githubusercontent.com/Fitomics/discexampdftest/main/RHR.png" alt="RHR Graph">
-    <div class="arrow" style="top: 60%; left: 50%;"></div>
     <input class="value-field" placeholder="62"><span class="unit-label">bpm</span>
     <input class="data-field" placeholder="Type notes here...">
   </div>
@@ -218,7 +166,6 @@
   <div class="title-text">Resting Metabolic Rate</div>
   <div class="graph-container">
     <img class="graph-image" src="https://raw.githubusercontent.com/Fitomics/discexampdftest/main/RMRINT.png" alt="RMR Graph">
-    <div class="arrow" style="top: 60%; left: 50%;"></div>
     <input class="value-field" placeholder="1850"><span class="unit-label">kcal/day</span>
     <input class="data-field" placeholder="Type notes here...">
   </div>
@@ -228,7 +175,6 @@
   <div class="title-text">Systolic / Diastolic Blood Pressure</div>
   <div class="graph-container">
     <img class="graph-image" src="https://raw.githubusercontent.com/Fitomics/discexampdftest/main/SBPDBP.png" alt="Blood Pressure Graph">
-    <div class="arrow" style="top: 60%; left: 50%;"></div>
     <input class="value-field" placeholder="118"><span class="unit-label">mmHg</span>
     <input class="value-field" placeholder="76"><span class="unit-label">mmHg</span>
     <input class="data-field" placeholder="Type notes here...">
@@ -236,12 +182,74 @@
 </div>
 
 <div class="page">
-  <div class="title-text">VO<sub>2</sub> Max Percentile</div>
+  <div class="title-text">VO₂ Max</div>
   <div class="graph-container">
     <img class="graph-image" src="https://raw.githubusercontent.com/Fitomics/discexampdftest/main/VO2Percentile.png" alt="VO2 Graph">
-    <div class="arrow" style="top: 60%; left: 50%;"></div>
-    <input class="value-field" placeholder="78"><span class="unit-label">%</span>
+    <div class="table-wrapper">
+      <table>
+        <tr><td>ml/kg/min</td><td><input class='value-field' placeholder=''></td></tr>
+        <tr><td>Percentile</td><td><input class='value-field' placeholder=''></td></tr>
+      </table>
+    </div>
     <input class="data-field" placeholder="Type notes here...">
+  </div>
+</div>
+
+<div class="page">
+  <div class="title-text">Functional Strength Scores</div>
+  <div class="graph-container">
+    <input class="value-field" placeholder="Total Strength Score"><span class="unit-label">score</span>
+    <input class="value-field" placeholder="Core Strength Score"><span class="unit-label">score</span>
+    <input class="value-field" placeholder="Lower Strength Score"><span class="unit-label">score</span>
+    <input class="value-field" placeholder="Upper Strength Score"><span class="unit-label">score</span>
+    <img class="graph-image" src="https://raw.githubusercontent.com/Fitomics/discexampdftest/main/bellcurve.png" alt="Functional Strength Bell Curve">
+    <input class="data-field" placeholder="Type notes here...">
+  </div>
+</div>
+
+<div class="page">
+  <div class="title-text">Predicted Maxes</div>
+  <div class="table-wrapper">
+    <table style="margin-top: 20px; font-size: 14px;">
+      <tr>
+        <th>Predicted Rep Max</th>
+        <th>Bench Press</th>
+        <th>Pulldown</th>
+        <th>Deadlift</th>
+      </tr>
+      <tr><td>1</td><td><input class='value-field'></td><td><input class='value-field'></td><td><input class='value-field'></td></tr>
+      <tr><td>2</td><td><input class='value-field'></td><td><input class='value-field'></td><td><input class='value-field'></td></tr>
+      <tr><td>3</td><td><input class='value-field'></td><td><input class='value-field'></td><td><input class='value-field'></td></tr>
+      <tr><td>4</td><td><input class='value-field'></td><td><input class='value-field'></td><td><input class='value-field'></td></tr>
+      <tr><td>5</td><td><input class='value-field'></td><td><input class='value-field'></td><td><input class='value-field'></td></tr>
+      <tr><td>6</td><td><input class='value-field'></td><td><input class='value-field'></td><td><input class='value-field'></td></tr>
+      <tr><td>7</td><td><input class='value-field'></td><td><input class='value-field'></td><td><input class='value-field'></td></tr>
+      <tr><td>8</td><td><input class='value-field'></td><td><input class='value-field'></td><td><input class='value-field'></td></tr>
+      <tr><td>9</td><td><input class='value-field'></td><td><input class='value-field'></td><td><input class='value-field'></td></tr>
+      <tr><td>10</td><td><input class='value-field'></td><td><input class='value-field'></td><td><input class='value-field'></td></tr>
+      <tr><td>11</td><td><input class='value-field'></td><td><input class='value-field'></td><td><input class='value-field'></td></tr>
+      <tr><td>12</td><td><input class='value-field'></td><td><input class='value-field'></td><td><input class='value-field'></td></tr>
+      <tr><td>13</td><td><input class='value-field'></td><td><input class='value-field'></td><td><input class='value-field'></td></tr>
+      <tr><td>14</td><td><input class='value-field'></td><td><input class='value-field'></td><td><input class='value-field'></td></tr>
+      <tr><td>15</td><td><input class='value-field'></td><td><input class='value-field'></td><td><input class='value-field'></td></tr>
+    </table>
+  </div>
+</div>
+
+<div class="page">
+  <div class="title-text">Resting Metabolic Rate Details</div>
+  <div class="table-wrapper">
+    <table>
+      <tr><th>Metric</th><th>Value</th></tr>
+      <tr><td>Predicted RMR</td><td><input class='value-field'><span class='unit-label'>kcal/day</span></td></tr>
+      <tr><td>Measured RMR</td><td><input class='value-field'><span class='unit-label'>kcal/day</span></td></tr>
+      <tr><td>% Calories from Fat</td><td><input class='value-field'><span class='unit-label'>%</span></td></tr>
+      <tr><td>% Calories from Carbohydrate</td><td><input class='value-field'><span class='unit-label'>%</span></td></tr>
+      <tr><td>Conservative Weight Loss Target</td><td><input class='value-field'><span class='unit-label'>kcal/day</span></td></tr>
+      <tr><td>Aggressive Weight Loss Target</td><td><input class='value-field'><span class='unit-label'>kcal/day</span></td></tr>
+      <tr><td>Conservative Weight Gain Target</td><td><input class='value-field'><span class='unit-label'>kcal/day</span></td></tr>
+      <tr><td>Aggressive Weight Gain Target</td><td><input class='value-field'><span class='unit-label'>kcal/day</span></td></tr>
+    </table>
   </div>
 </div>
 
@@ -250,36 +258,31 @@
   <div class="table-wrapper">
     <table>
       <tr><th>Target</th><th>Value</th></tr>
-      <tr><td>Energy Target</td><td><input class='value-field' placeholder=''><span class='unit-label'>kcal/day</span></td></tr>
-      <tr><td>Protein Target</td><td><input class='value-field' placeholder=''><span class='unit-label'>g/day</span></td></tr>
-      <tr><td>Carbohydrate Target</td><td><input class='value-field' placeholder=''><span class='unit-label'>g/day</span></td></tr>
-      <tr><td>Fat Target</td><td><input class='value-field' placeholder=''><span class='unit-label'>g/day</span></td></tr>
-      <tr><td>Fiber Target</td><td><input class='value-field' placeholder=''><span class='unit-label'>g/day</span></td></tr>
-      <tr><td>Fluid Target</td><td><input class='value-field' placeholder=''><span class='unit-label'>ml/day</span></td></tr>
+      <tr><td>Energy Target</td><td><input class='value-field'><span class='unit-label'>kcal/day</span></td></tr>
+      <tr><td>Protein Target</td><td><input class='value-field'><span class='unit-label'>g/day</span></td></tr>
+      <tr><td>Carbohydrate Target</td><td><input class='value-field'><span class='unit-label'>g/day</span></td></tr>
+      <tr><td>Fat Target</td><td><input class='value-field'><span class='unit-label'>g/day</span></td></tr>
+      <tr><td>Fiber Target</td><td><input class='value-field'><span class='unit-label'>g/day</span></td></tr>
+      <tr><td>Fluid Target</td><td><input class='value-field'><span class='unit-label'>ml/day</span></td></tr>
     </table>
   </div>
 </div>
-
 </div>
 
 <button onclick="generatePDF()">Download PDF Preview</button>
-
-<script>
-  async function generatePDF() {
-    const { jsPDF } = window.jspdf;
-    const pdf = new jsPDF('portrait', 'pt', 'letter');
-    const pages = document.getElementById('pdfWrapper').children;
-
-    for (let i = 0; i < pages.length; i++) {
-      const canvas = await html2canvas(pages[i], { scale: 2 });
-      const imgData = canvas.toDataURL('image/png');
-      pdf.addImage(imgData, 'PNG', 0, 0, 612, 792);
-      if (i < pages.length - 1) pdf.addPage();
+  <script>
+    async function generatePDF() {
+      const { jsPDF } = window.jspdf;
+      const pdf = new jsPDF('portrait', 'pt', 'letter');
+      const pages = document.getElementById('pdfWrapper').children;
+      for (let i = 0; i < pages.length; i++) {
+        const canvas = await html2canvas(pages[i], { scale: 2 });
+        const imgData = canvas.toDataURL('image/png');
+        pdf.addImage(imgData, 'PNG', 0, 0, 612, 792);
+        if (i < pages.length - 1) pdf.addPage();
+      }
+      pdf.save('discovery_exam_report.pdf');
     }
-
-    pdf.save('discovery_exam_report.pdf');
-  }
-</script>
-
+  </script>
 </body>
 </html>
