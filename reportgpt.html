@@ -87,69 +87,72 @@
       border-radius: 6px;
       cursor: pointer;
     }
-  </style>
+</style>
 </head>
 <body>
-  <div id="pdfWrapper">
-    <div class="page">
+  
+
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  <div class="page">
   <div class="title-text">Discovery Exam Report</div>
-  <input class="meta-field" placeholder="Enter Name">
-  <input class="meta-field" placeholder="Enter Date">
+  <input class="meta-field" >
+  <input class="meta-field" >
 </div>
 
 <div class="page">
   <div class="title-text">Summary Table</div>
   <div class="table-wrapper">
     <table style="font-size: 14px;">
-      <tr><th>Variable</th><th>Value</th></tr>
-      <tr><td>Body Mass Index (BMI)</td><td>24.3 kg/m²</td></tr>
-      <tr><td>Fat Mass Index (FMI)</td><td>6.2 kg/m²</td></tr>
-      <tr><td>Fat-Free Mass Index (FFMI)</td><td>17.8 kg/m²</td></tr>
-      <tr><td>Grip Strength</td><td>72.5 kg</td></tr>
-      <tr><td>Heart Rate Recovery</td><td>26 bpm</td></tr>
-      <tr><td>Resting Heart Rate</td><td>62 bpm</td></tr>
-      <tr><td>Resting Metabolic Rate</td><td>1850 kcal/day</td></tr>
-      <tr><td>Systolic BP</td><td>118 mmHg</td></tr>
-      <tr><td>Diastolic BP</td><td>76 mmHg</td></tr>
-      <tr><td>VO₂ Max Percentile</td><td>78%</td></tr>
+      <tr><th>Variable</th><th>Value</th><th>Note</th></tr>
+      <tr><td>Body Mass Index (BMI)</td><td><td><input class='value-field'></td></tr>
+      <tr><td>Fat Mass Index (FMI)</td><td></td><td><input class='value-field'></td></tr>
+      <tr><td>Fat-Free Mass Index (FFMI)</td><td></td><td><input class='value-field'></td></tr>
+      <tr><td>Grip Strength</td><td></td><td><input class='value-field'></td></tr>
+      <tr><td>Heart Rate Recovery</td><td></td><td><input class='value-field'></td></tr>
+      <tr><td>Resting Heart Rate</td><td></td><td><input class='value-field'></td></tr>
+      <tr><td>Resting Metabolic Rate</td><td></td><td><input class='value-field'></td></tr>
+      <tr><td>Systolic BP</td><td></td><td><input class='value-field'></td></tr>
+      <tr><td>Diastolic BP</td><td></td><td><input class='value-field'></td></tr>
+      <tr><td>VO₂ Max Percentile</td><td></td><td><input class='value-field'></td></tr>
+      <tr><td>Functional Strength Score</td><td><input class='value-field'></td><td><input class='value-field'></td></tr>
     </table>
   </div>
 </div>
-
 <div class="page">
   <div class="title-text">Body Mass Index</div>
   <div class="graph-container">
     <img class="graph-image" src="https://raw.githubusercontent.com/Fitomics/discexampdftest/main/BMI.png" alt="BMI Graph">
-    <input class="value-field" placeholder="24.3"><span class="unit-label">kg/m²</span>
-    <input class="data-field" placeholder="Type notes here...">
+    <input class="value-field" ><span class="unit-label">kg/m²</span>
   </div>
 </div>
 
 <div class="page">
-  <div class="title-text">Fat Mass Index / Fat-Free Mass Index</div>
+  <div class="title-text">Fat & Fat-Free Mass Index</div>
   <div class="graph-container">
     <img class="graph-image" src="https://raw.githubusercontent.com/Fitomics/discexampdftest/main/FMI_FFMI.png" alt="FMI FFMI Graph">
-    <input class="value-field" placeholder="6.2"><span class="unit-label">kg/m²</span>
-    <input class="value-field" placeholder="17.8"><span class="unit-label">kg/m²</span>
-    <input class="data-field" placeholder="Type notes here...">
+    <input class="value-field" ><span class="unit-label">kg/m²</span>
+    <input class="value-field" ><span class="unit-label">kg/m²</span>
   </div>
 </div>
 
 <div class="page">
-  <div class="title-text">Grip Strength</div>
+  <div class="title-text">Blood Pressure</div>
   <div class="graph-container">
-    <img class="graph-image" src="https://raw.githubusercontent.com/Fitomics/discexampdftest/main/GripStrength.png" alt="Grip Strength Graph">
-    <input class="value-field" placeholder="72.5"><span class="unit-label">kg</span>
-    <input class="data-field" placeholder="Type notes here...">
-  </div>
-</div>
-
-<div class="page">
-  <div class="title-text">Heart Rate Recovery</div>
-  <div class="graph-container">
-    <img class="graph-image" src="https://raw.githubusercontent.com/Fitomics/discexampdftest/main/HRR.png" alt="HRR Graph">
-    <input class="value-field" placeholder="26"><span class="unit-label">bpm</span>
-    <input class="data-field" placeholder="Type notes here...">
+    <img class="graph-image" src="https://raw.githubusercontent.com/Fitomics/discexampdftest/main/SBPDBP.png" alt="Blood Pressure Graph">
+    <input class="value-field" ><span class="unit-label">mmHg</span>
+    <input class="value-field" ><span class="unit-label">mmHg</span>
   </div>
 </div>
 
@@ -157,8 +160,7 @@
   <div class="title-text">Resting Heart Rate</div>
   <div class="graph-container">
     <img class="graph-image" src="https://raw.githubusercontent.com/Fitomics/discexampdftest/main/RHR.png" alt="RHR Graph">
-    <input class="value-field" placeholder="62"><span class="unit-label">bpm</span>
-    <input class="data-field" placeholder="Type notes here...">
+    <input class="value-field" ><span class="unit-label">bpm</span>
   </div>
 </div>
 
@@ -166,18 +168,20 @@
   <div class="title-text">Resting Metabolic Rate</div>
   <div class="graph-container">
     <img class="graph-image" src="https://raw.githubusercontent.com/Fitomics/discexampdftest/main/RMRINT.png" alt="RMR Graph">
-    <input class="value-field" placeholder="1850"><span class="unit-label">kcal/day</span>
-    <input class="data-field" placeholder="Type notes here...">
-  </div>
-</div>
-
-<div class="page">
-  <div class="title-text">Systolic / Diastolic Blood Pressure</div>
-  <div class="graph-container">
-    <img class="graph-image" src="https://raw.githubusercontent.com/Fitomics/discexampdftest/main/SBPDBP.png" alt="Blood Pressure Graph">
-    <input class="value-field" placeholder="118"><span class="unit-label">mmHg</span>
-    <input class="value-field" placeholder="76"><span class="unit-label">mmHg</span>
-    <input class="data-field" placeholder="Type notes here...">
+    <input class="value-field" ><span class="unit-label">kcal/day</span>
+    <div class="table-wrapper">
+      <table>
+        <tr><th>Metric</th><th>Value</th></tr>
+        <tr><td>Predicted RMR</td><td><input class='value-field'><span class='unit-label'>kcal/day</span></td></tr>
+        <tr><td>Measured RMR</td><td><input class='value-field'><span class='unit-label'>kcal/day</span></td></tr>
+        <tr><td>% Calories from Fat</td><td><input class='value-field'><span class='unit-label'>%</span></td></tr>
+        <tr><td>% Calories from Carbohydrate</td><td><input class='value-field'><span class='unit-label'>%</span></td></tr>
+        <tr><td>Conservative Weight Loss Target</td><td><input class='value-field'><span class='unit-label'>kcal/day</span></td></tr>
+        <tr><td>Aggressive Weight Loss Target</td><td><input class='value-field'><span class='unit-label'>kcal/day</span></td></tr>
+        <tr><td>Conservative Weight Gain Target</td><td><input class='value-field'><span class='unit-label'>kcal/day</span></td></tr>
+        <tr><td>Aggressive Weight Gain Target</td><td><input class='value-field'><span class='unit-label'>kcal/day</span></td></tr>
+      </table>
+    </div>
   </div>
 </div>
 
@@ -187,28 +191,37 @@
     <img class="graph-image" src="https://raw.githubusercontent.com/Fitomics/discexampdftest/main/VO2Percentile.png" alt="VO2 Graph">
     <div class="table-wrapper">
       <table>
-        <tr><td>ml/kg/min</td><td><input class='value-field' placeholder=''></td></tr>
-        <tr><td>Percentile</td><td><input class='value-field' placeholder=''></td></tr>
+        <tr><td>ml/kg/min</td><td><input class='value-field'></td></tr>
+        <tr><td>Percentile</td><td><input class='value-field'></td></tr>
       </table>
     </div>
-    <input class="data-field" placeholder="Type notes here...">
+  </div>
+</div>
+
+
+<div class="page">
+  <div class="title-text">Grip Strength</div>
+  <div class="graph-container">
+    <img class="graph-image" src="https://raw.githubusercontent.com/Fitomics/discexampdftest/main/GripStrength.png" alt="Grip Strength Graph">
+    <input class="value-field" ><span class="unit-label">kg</span>
   </div>
 </div>
 
 <div class="page">
   <div class="title-text">Functional Strength Scores</div>
   <div class="graph-container">
-    <input class="value-field" placeholder="Total Strength Score"><span class="unit-label">score</span>
-    <input class="value-field" placeholder="Core Strength Score"><span class="unit-label">score</span>
-    <input class="value-field" placeholder="Lower Strength Score"><span class="unit-label">score</span>
-    <input class="value-field" placeholder="Upper Strength Score"><span class="unit-label">score</span>
+    <input class="value-field" ><span class="unit-label">score</span>
+    <input class="value-field" ><span class="unit-label">score</span>
+    <input class="value-field" ><span class="unit-label">score</span>
+    <input class="value-field" ><span class="unit-label">score</span>
     <img class="graph-image" src="https://raw.githubusercontent.com/Fitomics/discexampdftest/main/bellcurve.png" alt="Functional Strength Bell Curve">
-    <input class="data-field" placeholder="Type notes here...">
+    
+  </div>
   </div>
 </div>
-
+</div>
 <div class="page">
-  <div class="title-text">Predicted Maxes</div>
+  <div class="title-text">Predicted Rep Maxes</div>
   <div class="table-wrapper">
     <table style="margin-top: 20px; font-size: 14px;">
       <tr>
@@ -236,23 +249,14 @@
   </div>
 </div>
 
-<div class="page">
-  <div class="title-text">Resting Metabolic Rate Details</div>
-  <div class="table-wrapper">
-    <table>
-      <tr><th>Metric</th><th>Value</th></tr>
-      <tr><td>Predicted RMR</td><td><input class='value-field'><span class='unit-label'>kcal/day</span></td></tr>
-      <tr><td>Measured RMR</td><td><input class='value-field'><span class='unit-label'>kcal/day</span></td></tr>
-      <tr><td>% Calories from Fat</td><td><input class='value-field'><span class='unit-label'>%</span></td></tr>
-      <tr><td>% Calories from Carbohydrate</td><td><input class='value-field'><span class='unit-label'>%</span></td></tr>
-      <tr><td>Conservative Weight Loss Target</td><td><input class='value-field'><span class='unit-label'>kcal/day</span></td></tr>
-      <tr><td>Aggressive Weight Loss Target</td><td><input class='value-field'><span class='unit-label'>kcal/day</span></td></tr>
-      <tr><td>Conservative Weight Gain Target</td><td><input class='value-field'><span class='unit-label'>kcal/day</span></td></tr>
-      <tr><td>Aggressive Weight Gain Target</td><td><input class='value-field'><span class='unit-label'>kcal/day</span></td></tr>
-    </table>
-  </div>
+
+  
 </div>
 
+
+  
+  
+  </div>
 <div class="page">
   <div class="title-text">Initial Nutrition Targets</div>
   <div class="table-wrapper">
@@ -268,7 +272,6 @@
   </div>
 </div>
 </div>
-
 <button onclick="generatePDF()">Download PDF Preview</button>
   <script>
     async function generatePDF() {
@@ -284,5 +287,7 @@
       pdf.save('discovery_exam_report.pdf');
     }
   </script>
+
+
 </body>
 </html>
