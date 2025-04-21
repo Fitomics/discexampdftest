@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Discovery Exam PDF</title>
+
+  <!-- Chart.js for dynamic charts -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script> <!-- :contentReference[oaicite:6]{index=6} -->
+
+  <!-- html2canvas & jsPDF for PDF export -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script> <!-- :contentReference[oaicite:7]{index=7} -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+
+  <link href="https://fonts.googleapis.com/css2?family=Glacial+Indifference&display=swap" rel="stylesheet">
+  <style>
+    body {
+      font-family: 'Glacial Indifference', sans-serif;
+      margin: 0;
+      padding: 20px;
+      background: #ffffff;
+      text-align: center;
+      color: #00263d;
+    }
+    .page {
+      position: relative;
+      width: 100%;
+      max-width: 850px;
+      aspect-ratio: 2550 / 3300;
+      margin: 30px auto;
+      background: #ffffff;
+      border-radius: 12px;
+      box-shadow: 0 8px 24px rgba(0,38,61,0.15);
+      padding-top: 100px;
+    }
+    .title-text {
+      margin: 0 auto 20px auto;
+      font-size: 36px;
+      font-weight: bold;
+      text-align: center;
+    }
+    .graph-container {
+      position: relative;
+      width: 90%;
+      margin: 0 auto;
+      padding: 24px;
+      border-radius: 10px;
+      background-color: #ffffff;
+      border: 1px solid #e4ac61;
+    }
+    .graph-image, canvas {
+      width: 100%;
+      max-height: 500px;
+      object-fit: contain;
+      border-radius: 6px;
+      border: 1px solid #e4ac61;
+    }
+    .data-field, .value-field, .meta-field {
+      font-size: 16px;
+      width: 60%;
+      margin: 10px auto;
+      padding: 10px 14px;
+      text-align: center;
+      border: 1px solid #ccd5df;
+      border-radius: 6px;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.03);
+    }
+    .unit-label {
+      font-size: 16px;
+      margin-left: 8px;
+      vertical-align: middle;
+    }
+    .table-wrapper {
+      width: 80%;
+      margin: 0 auto;
+    }
+    .table-wrapper table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 14px;
+    }
+    .table-wrapper th, .table-wrapper td {
+      padding: 10px;
+      border: 1px solid #c19962;
+      text-align: left;
+    }
+    button {
+      margin-top: 20px;
+      padding: 12px 28px;
+      font-size: 16px;
+      background-color: #c19962;
+      color: white;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Wrapper for PDF export -->
+  <div id="pdfWrapper">
+
+    <!-- Metadata Page -->
+    <div class="page">
+      <div class="title-text">Discovery Exam Report</div>
+      <input class="meta-field" placeholder="Patient Name">
+      <input class="meta-field" placeholder="Date of Exam">
+    </div>
+
+    <!-- Summary Table Page -->
+    <div class="page">
+      <div class="title-text">Summary Table</div>
+      <div class="table-wrapper">
+        <table>
+          <thead>
+            <tr>
+              <th>Variable</th>
+              <th>Value</th>
+              <th>Note</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr><td>BMI</td> <td><input class="value-field"></td> <td><input class="value-field"></td></tr>
+            <tr><td>FMI</td> <td><input class="value-field"></td> <td><input class="value-field"></td></tr>
+            <tr><td>FFMI</td><td><input class="value-field"></td><td><input class="value-field"></td></tr>
+            <tr><td>Grip Strength</td><td><input class="value-field"></td><td><input class="value-field"></td></tr>
+            <tr><td>HR Recovery</td><td><input class="value-field"></td><td><input class="value-field"></td></tr>
+            <tr><td>Resting HR</td><td><input class="value-field"></td><td><input class="value-field"></td></tr>
+            <tr><td>RMR</td><td><input class="value-field"></td><td><input class="value-field"></td></tr>
+            <tr><td>SBP</td><td><input class="value-field"></td><td><input class="value-field"></td></tr>
+            <tr><td>DBP</td><td><input class="value-field"></td><td><input class="value-field"></td></tr>
+            <tr><td>VO₂ Max %ile</td><td><input class="value-field"></td><td><input class="value-field"></td></tr>
+            <tr><td>Strength Score</td><td><input class="value-field"></td><td><input class="value-field"></td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- BMI Chart Page -->
+    <div class="page">
+      <div class="title-text">Body Mass Index</div>
+      <div class="graph-container">
+        <canvas id="bmiChart" width="800" height="500"></canvas>
+        <input class="value-field"><span class="unit-label">kg/m²</span>
+      </div>
+    </div>
+
+    <!-- RMR & Macronutrient Page -->
+    <div class="page">
+      <div class="title-text">Resting Metabolic Rate</div>
+      <div class="graph-container">
+        <canvas id="rmrChart" width="800" height="500"></canvas>
+        <input class="value-field"><span class="unit-label">kcal/day</span>
+      </div>
+      <div class="table-wrapper">
+        <table>
+          <tr><th>Metric</th><th>Value</th></tr>
+          <tr><td>Predicted RMR</td><td><input class="value-field"><span class="unit-label">kcal/day</span></td></tr>
+          <tr><td>Measured RMR</td><td><input class="value-field"><span class="unit-label">kcal/day</span></td></tr>
+          <tr><td>% Calories Fat</td><td><input class="value-field"><span class="unit-label">%</span></td></tr>
+          <tr><td>% Calories Carb</td><td><input class="value-field"><span class="unit-label">%</span></td></tr>
+          <tr><td>Weight Loss Target</td><td><input class="value-field"><span class="unit-label">kcal/day</span></td></tr>
+        </table>
+      </div>
+    </div>
+
+    <!-- Additional pages (VO₂ Max, Grip, Strength, etc.) follow the same pattern -->
+
+  </div><!-- end #pdfWrapper -->
+
+  <button onclick="generatePDF()">Download PDF Preview</button>
+
+  <script>
+    // Wait for all fonts to load before rendering charts or capturing
+    document.fonts.ready.then(initChartsAndPDF);  // :contentReference[oaicite:8]{index=8}
+
+    function initChartsAndPDF() {
+      // Example: render BMI chart
+      const bmiData = {
+        labels: ['Jan', 'Feb', 'Mar'],
+        datasets: [{ label: 'BMI', data: [24, 23.5, 23], borderWidth: 2 }]
+      };
+      const ctxBmi = document.getElementById('bmiChart').getContext('2d');
+      new Chart(ctxBmi, {
+        type: 'line',
+        data: bmiData,
+        options: { responsive: false }
+      });
+
+      // Example: render RMR chart (replace with real data)
+      const rmrData = {
+        labels: ['Jan', 'Feb', 'Mar'],
+        datasets: [{ label: 'RMR', data: [1500, 1520, 1490], borderWidth: 2 }]
+      };
+      const ctxRmr = document.getElementById('rmrChart').getContext('2d');
+      new Chart(ctxRmr, {
+        type: 'line',
+        data: rmrData,
+        options: { responsive: false }
+      });
+
+      // PDF generation logic
+      async function generatePDF() {
+        const { jsPDF } = window.jspdf;
+        const pdf = new jsPDF('portrait', 'pt', 'letter');
+        const pages = document.getElementById('pdfWrapper').children;  // :contentReference[oaicite:9]{index=9}
+        for (let i = 0; i < pages.length; i++) {
+          const canvas = await html2canvas(pages[i], {
+            scale: 2,
+            useCORS: true,
+            allowTaint: true,
+            backgroundColor: '#ffffff'
+          });
+          const imgData = canvas.toDataURL('image/png');
+          pdf.addImage(imgData, 'PNG', 0, 0, 612, 792);
+          if (i < pages.length - 1) pdf.addPage();
+        }
+        pdf.save('discovery_exam_report.pdf');
+      }
+
+      // Expose to global scope
+      window.generatePDF = generatePDF;
+    }
+  </script>
+
+</body>
+</html>
