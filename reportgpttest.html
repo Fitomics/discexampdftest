@@ -138,6 +138,43 @@
      button:hover {
          background-color: #a98451;
      }
+
+    .selected-macros {
+      width: 90%;
+      margin: 0 auto 20px auto;
+      text-align: center;
+      padding: 15px 15px 20px 15px; /* Added more bottom padding */
+      background-color: #f8f8f8;
+      border: 1px solid #c19962;
+      border-radius: 8px;
+      display: flex;
+      flex-direction: column; /* Changed to column to stack title and then items */
+      align-items: center;
+    }
+
+    .selected-macros .section-subtitle {
+      text-align: center;
+      font-size: 22px;
+      margin: 0 auto 15px auto; /* Reduced top margin since it's inside the box */
+      color: #00263d;
+      font-weight: 600;
+      border-bottom: 1px solid #c19962;
+      padding-bottom: 8px;
+      width: 80%;
+      max-width: 400px;
+    }
+
+    .macro-item {
+      margin: 8px 20px;
+      display: inline-block; /* Allow items to appear side by side */
+    }
+
+    .macro-items-container {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      width: 100%;
+    }
   </style>
 </head>
 <body>
@@ -293,10 +330,10 @@
     <div class="page">
       <div class="title-text">Functional Strength Scores</div>
       <div class="graph-container">
-         <div>Upper Body Score: <input class="value-field" id="graphUpperScore" readonly><span class="unit-label">%ile</span></div>
-        <div>Lower Body Score: <input class="value-field" id="graphLowerScore" readonly><span class="unit-label">%ile</span></div>
-        <div>Core Score: <input class="value-field" id="graphCoreScore" readonly><span class="unit-label">%ile</span></div>
-        <div>Total Score: <input class="value-field" id="graphTotalScore" readonly><span class="unit-label">%ile</span></div>
+         <div>Upper Body Score: <input class="value-field" id="graphUpperScore" readonly><span class="unit-label"></span></div>
+        <div>Lower Body Score: <input class="value-field" id="graphLowerScore" readonly><span class="unit-label"></span></div>
+        <div>Core Score: <input class="value-field" id="graphCoreScore" readonly><span class="unit-label"></span></div>
+        <div>Total Score: <input class="value-field" id="graphTotalScore" readonly><span class="unit-label"></span></div>
         <img class="graph-image" style="margin-top: 20px;" src="bellcurve.png" alt="Functional Strength Bell Curve">
       </div>
     </div>
@@ -337,6 +374,24 @@
 
     <div class="page">
       <div class="title-text">Initial Nutrition Targets</div>
+      
+      <div class="selected-macros">
+        <h3 class="section-subtitle">Dietary Assumptions</h3>
+        
+        <div class="macro-items-container">
+          <div class="macro-item">
+            <span class="macro-label">Protein Assumption:</span>
+            <input class="value-field" id="nutritionProteinTarget" readonly>
+            <span class="unit-label">g/kg FFM</span>
+          </div>
+          <div class="macro-item">
+            <span class="macro-label">Fat Content:</span>
+            <input class="value-field" id="nutritionFatTarget" readonly>
+            <span class="unit-label">% of calories</span>
+          </div>
+        </div>
+      </div>
+      
       <div class="table-wrapper">
         <table>
           <tr><th>Target</th><th>Value</th></tr>
@@ -591,7 +646,15 @@
         populateField('nutritionFat', 'fat_grams');
         populateField('nutritionFiber', 'fiber_grams');
         populateField('nutritionFluid', 'fluid_total');
-
+        
+        // Add these new lines to populate the selected protein and fat values
+        const proteinValue = localStorage.getItem('protein') || '1.2'; // Default to 1.2 if not set
+        document.getElementById('nutritionProteinTarget').value = proteinValue;
+        
+        // Convert fat value from decimal to percentage
+        const fatValue = localStorage.getItem('fat') || '0.3'; // Default to 0.3 if not set
+        const fatPercentage = (parseFloat(fatValue) * 100).toFixed(0);
+        document.getElementById('nutritionFatTarget').value = fatPercentage;
     });
 
     // PDF Generation function (no changes needed here)
