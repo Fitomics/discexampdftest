@@ -263,6 +263,30 @@
           <label for="measured_rmr">Measured Resting Metabolic Rate:</label>
           <input type="number" id="measured_rmr" name="measured_rmr">
         </div>
+        <div class="form-group">
+          <label for="fat_calories_percent">% Calories from Fat:</label>
+          <input type="number" id="fat_calories_percent" name="fat_calories_percent">
+        </div>
+        <div class="form-group">
+          <label for="carb_calories_percent">% Calories from Carbohydrate:</label>
+          <input type="number" id="carb_calories_percent" name="carb_calories_percent">
+        </div>
+        <div class="form-group">
+          <label for="weight_loss_conservative">Conservative Weight Loss Target (kcal/day):</label>
+          <input type="number" id="weight_loss_conservative" name="weight_loss_conservative">
+        </div>
+        <div class="form-group">
+          <label for="weight_loss_aggressive">Aggressive Weight Loss Target (kcal/day):</label>
+          <input type="number" id="weight_loss_aggressive" name="weight_loss_aggressive">
+        </div>
+        <div class="form-group">
+          <label for="weight_gain_conservative">Conservative Weight Gain Target (kcal/day):</label>
+          <input type="number" id="weight_gain_conservative" name="weight_gain_conservative">
+        </div>
+        <div class="form-group">
+          <label for="weight_gain_aggressive">Aggressive Weight Gain Target (kcal/day):</label>
+          <input type="number" id="weight_gain_aggressive" name="weight_gain_aggressive">
+        </div>
 
         <div class="form-group full-width">
           <h2>Strength Measurements</h2>
@@ -452,6 +476,8 @@
         'pulldown_10rm', 'dl_10rm', 'upper_strength_score', 'lower_strength_score',
         'core_strength_score', 'total_strength_score', 'six_min_distance', 'cooper_vo2max',
         'watts_peak_workload', 'hr_bpm', 'post_heart_rate', 'storer_vo2max', 'protein', 'fat',
+        'fat_calories_percent', 'carb_calories_percent', 'weight_loss_conservative',
+        'weight_loss_aggressive', 'weight_gain_conservative', 'weight_gain_aggressive',
         // Keys for calculated values saved from table/inputs (some overlap, which is fine)
         'fat_mass', 'fat_free_mass', 'fat_mass_index', 'fat_free_mass_index', 'bmi', 'rmr',
         'predicted_daily_calorie_burn', 'target_energy', 'protein_value', 'protein_grams',
@@ -523,7 +549,16 @@
      * Numeric inputs that are empty or invalid receive the .input-empty class.
      */
     function updateInputStyles() {
-      const numericInputs = ['age', 'weight', 'bodyfat', 'height', 'workout_calories', 'workouts_per_week', 'sbp_mmhg', 'dbp_mmhg', 'resting_hr', 'measured_rmr', 'grip_strength_left', 'grip_strength_right', 'bench_10rm', 'chop_10rm', 'pulldown_10rm', 'dl_10rm', 'upper_strength_score', 'lower_strength_score', 'core_strength_score', 'total_strength_score', 'six_min_distance', 'watts_peak_workload', 'hr_bpm', 'post_heart_rate'];
+      const numericInputs = ['age', 'weight', 'bodyfat', 'height', 'workout_calories', 
+        'workouts_per_week', 'sbp_mmhg', 'dbp_mmhg', 'resting_hr', 'measured_rmr', 
+        'grip_strength_left', 'grip_strength_right', 'bench_10rm', 'chop_10rm', 
+        'pulldown_10rm', 'dl_10rm', 'upper_strength_score', 'lower_strength_score', 
+        'core_strength_score', 'total_strength_score', 'six_min_distance', 
+        'watts_peak_workload', 'hr_bpm', 'post_heart_rate',
+        // Add new fields
+        'fat_calories_percent', 'carb_calories_percent', 'weight_loss_conservative',
+        'weight_loss_aggressive', 'weight_gain_conservative', 'weight_gain_aggressive'];
+      
       numericInputs.forEach(id => {
         const elem = document.getElementById(id);
         if (elem) {
@@ -814,6 +849,14 @@
       saveToDatabase('protein', document.getElementById('protein').value);
       saveToDatabase('fat', document.getElementById('fat').value);
 
+      // Save the new field values
+      saveToDatabase('fat_calories_percent', document.getElementById('fat_calories_percent').value);
+      saveToDatabase('carb_calories_percent', document.getElementById('carb_calories_percent').value);
+      saveToDatabase('weight_loss_conservative', document.getElementById('weight_loss_conservative').value);
+      saveToDatabase('weight_loss_aggressive', document.getElementById('weight_loss_aggressive').value);
+      saveToDatabase('weight_gain_conservative', document.getElementById('weight_gain_conservative').value);
+      saveToDatabase('weight_gain_aggressive', document.getElementById('weight_gain_aggressive').value);
+
       // Save CALCULATED input values as well (so they persist on reload if inputs are present)
       saveToDatabase('fat_mass', document.getElementById('fat_mass').value);
       saveToDatabase('fat_free_mass', document.getElementById('fat_free_mass').value);
@@ -887,6 +930,14 @@
       document.getElementById('post_heart_rate').value = loadFromDatabase('post_heart_rate') || '';
       document.getElementById('protein').value = loadFromDatabase('protein') || '1.2'; // Default
       document.getElementById('fat').value = loadFromDatabase('fat') || '0.3'; // Default
+
+      // Load saved data for the new fields
+      document.getElementById('fat_calories_percent').value = loadFromDatabase('fat_calories_percent') || '';
+      document.getElementById('carb_calories_percent').value = loadFromDatabase('carb_calories_percent') || '';
+      document.getElementById('weight_loss_conservative').value = loadFromDatabase('weight_loss_conservative') || '';
+      document.getElementById('weight_loss_aggressive').value = loadFromDatabase('weight_loss_aggressive') || '';
+      document.getElementById('weight_gain_conservative').value = loadFromDatabase('weight_gain_conservative') || '';
+      document.getElementById('weight_gain_aggressive').value = loadFromDatabase('weight_gain_aggressive') || '';
 
       // Initial calculation run based on loaded/default data
       calculateValues();
@@ -1059,6 +1110,13 @@
           ['Fat Mass Index', (document.getElementById('fat_mass_index').value || 'N/A') + ' kg/m²', '', ''],
           ['Fat-Free Mass Index', (document.getElementById('fat_free_mass_index').value || 'N/A') + ' kg/m²', '', ''],
           ['Estimated RMR', (document.getElementById('rmr').value || 'N/A') + ' kcal', '', ''],
+          ['Measured RMR', (document.getElementById('measured_rmr').value || 'N/A') + ' kcal', '', ''],
+          ['% Calories from Fat', (document.getElementById('fat_calories_percent').value || 'N/A') + '%', '', ''],
+          ['% Calories from Carbohydrate', (document.getElementById('carb_calories_percent').value || 'N/A') + '%', '', ''],
+          ['Conservative Weight Loss Target', (document.getElementById('weight_loss_conservative').value || 'N/A') + ' kcal/day', '', ''],
+          ['Aggressive Weight Loss Target', (document.getElementById('weight_loss_aggressive').value || 'N/A') + ' kcal/day', '', ''],
+          ['Conservative Weight Gain Target', (document.getElementById('weight_gain_conservative').value || 'N/A') + ' kcal/day', '', ''],
+          ['Aggressive Weight Gain Target', (document.getElementById('weight_gain_aggressive').value || 'N/A') + ' kcal/day', '', ''],
           ['Predicted Daily Burn', (document.getElementById('predicted_daily_calorie_burn').value || 'N/A') + ' kcal', '', ''],
           ['Target Energy', document.getElementById('target_energy').textContent || 'N/A', '', ''],
           ['Protein', document.getElementById('protein_value').textContent || 'N/A',
