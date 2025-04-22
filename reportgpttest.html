@@ -324,7 +324,13 @@
       <div class="title-text">Grip Strength</div>
       <div class="graph-container">
         <img class="graph-image" src="GripStrength.png" alt="Grip Strength Graph">
-        <input class="value-field" id="graphGrip" readonly><span class="unit-label">kg</span>
+        <div class="table-wrapper">
+          <table>
+            <tr><td>Right Hand Grip Strength</td><td><input class="value-field" id="graphGripRight" readonly><span class="unit-label">kg</span></td></tr>
+            <tr><td>Left Hand Grip Strength</td><td><input class="value-field" id="graphGripLeft" readonly><span class="unit-label">kg</span></td></tr>
+            <tr><td>Average Grip Strength</td><td><input class="value-field" id="graphGripAvg" readonly><span class="unit-label">kg</span></td></tr>
+          </table>
+        </div>
       </div>
     </div>
 
@@ -682,7 +688,9 @@
         // Percentile needs data - skip for now
 
         // Page 9: Grip Strength Graph
-        populateField('graphGrip', 'grip_strength_avg');
+        populateField('graphGripRight', 'grip_strength_right');
+        populateField('graphGripLeft', 'grip_strength_left');
+        populateField('graphGripAvg', 'grip_strength_avg');
 
         // Page 10: Functional Strength Scores Graph
         populateField('graphUpperScore', 'upper_strength_score');
