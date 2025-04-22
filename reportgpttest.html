@@ -450,6 +450,24 @@
         }
     }
 
+    // Helper function to calculate rep maxes
+    function calculateRepMaxes(rm10) {
+        if (!rm10 || isNaN(parseFloat(rm10))) return Array(15).fill('N/A');
+        
+        // Calculate 1RM by dividing 10RM by 0.79
+        const rm1 = parseFloat(rm10) / 0.79;
+        
+        // Coefficients for each rep max
+        const coefficients = [
+            1.00, 0.98, 0.96, 0.93, 0.91, 
+            0.88, 0.86, 0.84, 0.81, 0.79, 
+            0.77, 0.75, 0.73, 0.71, 0.69
+        ];
+        
+        // Calculate all rep maxes
+        return coefficients.map(coef => Math.round(rm1 * coef));
+    }
+
     document.addEventListener('DOMContentLoaded', () => {
         // --- Populate Fields ---
 
@@ -533,6 +551,36 @@
         populateField('repmax10Pulldown', 'pulldown_10rm');
         populateField('repmax10Deadlift', 'dl_10rm');
         // Chop (chop_10rm) doesn't have a column in the provided table structure
+
+        // Calculate and populate rep maxes
+        const bench10rm = localStorage.getItem('bench_10rm');
+        const pulldown10rm = localStorage.getItem('pulldown_10rm');
+        const deadlift10rm = localStorage.getItem('dl_10rm');
+
+        const benchRepMaxes = calculateRepMaxes(bench10rm);
+        const pulldownRepMaxes = calculateRepMaxes(pulldown10rm);
+        const deadliftRepMaxes = calculateRepMaxes(deadlift10rm);
+
+        // Get the specific rep max table (page 11)
+        const repMaxTable = document.querySelector('.page:nth-of-type(11) .table-wrapper table');
+        if (repMaxTable) {
+            // Loop through all rows (1-15)
+            for (let i = 1; i <= 15; i++) {
+                // Row index is i-1 because of the header row
+                const row = repMaxTable.rows[i];
+                if (row) {
+                    // Access input fields in each cell (columns 1, 2, 3 for bench, pulldown, deadlift)
+                    const benchInput = row.cells[1].querySelector('input');
+                    const pulldownInput = row.cells[2].querySelector('input');
+                    const deadliftInput = row.cells[3].querySelector('input');
+                    
+                    // Set values from calculated rep maxes (index i-1 for 0-based array)
+                    if (benchInput) benchInput.value = benchRepMaxes[i-1] || 'N/A';
+                    if (pulldownInput) pulldownInput.value = pulldownRepMaxes[i-1] || 'N/A';
+                    if (deadliftInput) deadliftInput.value = deadliftRepMaxes[i-1] || 'N/A';
+                }
+            }
+        }
 
         // Page 12: Nutrition Targets Table
         populateField('nutritionEnergy', 'target_energy');
