@@ -484,7 +484,8 @@
         'protein_calories', 'fat_percentage', 'fat_grams', 'fat_calories', 'carb_percentage',
         'carb_grams', 'carb_calories', 'fiber_value', 'fiber_grams', 'fluid_ml_per_kg', 'fluid_total',
         // The key for the database blob itself
-        'nutritionDb'
+        'nutritionDb',
+        'selected_vo2_method', 'unified_vo2max'
     ];
 
 
@@ -755,41 +756,72 @@
       // Calculate Cooper VO2 Max
       const sixMinDistance = parseFloat(document.getElementById('six_min_distance').value);
       const cooperElem = document.getElementById('cooper_vo2max');
-      if (!isNaN(sixMinDistance) && sixMinDistance > 0) { // Added check for positive distance
-        const cooperVO2Max = 35.97 * (sixMinDistance * 2) - 11.29; // Original formula assumes 12 min walk/run
-        cooperElem.value = cooperVO2Max.toFixed(2);
-        cooperElem.classList.remove('calc-unavailable');
-        cooperElem.classList.add('calc-available');
-      } else {
-        cooperElem.value = "";
-        cooperElem.classList.remove('calc-available');
-        cooperElem.classList.add('calc-unavailable');
-      }
-
+      
       // Calculate Bike/Storer VO2 Max
       const watts = parseFloat(document.getElementById('watts_peak_workload').value);
       const age = parseFloat(document.getElementById('age').value);
       // weight already parsed above
       const gender = document.getElementById('gender').value;
       const storerElem = document.getElementById('storer_vo2max');
-
-      if (!isNaN(watts) && !isNaN(age) && !isNaN(weight) && watts > 0 && weight > 0) { // Check for valid inputs
+      
+      // Get potential values for both methods
+      let cooperVO2Max = null;
+      let storerVO2Max = null;
+      
+      // Calculate Cooper if inputs are valid
+      if (!isNaN(sixMinDistance) && sixMinDistance > 0) {
+        cooperVO2Max = 35.97 * (sixMinDistance * 2) - 11.29;
+      }
+      
+      // Calculate Storer if inputs are valid
+      if (!isNaN(watts) && !isNaN(age) && !isNaN(weight) && watts > 0 && weight > 0) {
         const weightkg = weight / 2.20462;
-        let storerVO2Max;
-
         if (gender === 'male') {
           storerVO2Max = (10.51 * watts + 6.35 * weightkg - 10.49 * age + 519.3) / weightkg;
         } else { // female
           storerVO2Max = (9.39 * watts + 7.7 * weightkg - 5.88 * age + 136.7) / weightkg;
         }
-
+      }
+      
+      // Logic for which method to display and store
+      let selectedVO2Method = localStorage.getItem('selected_vo2_method') || null;
+      let currentVO2Value = null;
+      
+      // If no method is selected yet or user has both sets of inputs, default to Storer if available
+      if (!selectedVO2Method) {
+        if (storerVO2Max !== null) {
+          selectedVO2Method = 'storer';
+        } else if (cooperVO2Max !== null) {
+          selectedVO2Method = 'cooper';
+        }
+      }
+      
+      // Clear both fields first
+      cooperElem.value = "";
+      cooperElem.classList.remove('calc-available');
+      cooperElem.classList.add('calc-unavailable');
+      
+      storerElem.value = "";
+      storerElem.classList.remove('calc-available');
+      storerElem.classList.add('calc-unavailable');
+      
+      // Set the selected method's value
+      if (selectedVO2Method === 'storer' && storerVO2Max !== null) {
         storerElem.value = storerVO2Max.toFixed(2);
         storerElem.classList.remove('calc-unavailable');
         storerElem.classList.add('calc-available');
-      } else {
-        storerElem.value = "";
-        storerElem.classList.remove('calc-available');
-        storerElem.classList.add('calc-unavailable');
+        currentVO2Value = storerVO2Max.toFixed(2);
+      } else if (selectedVO2Method === 'cooper' && cooperVO2Max !== null) {
+        cooperElem.value = cooperVO2Max.toFixed(2);
+        cooperElem.classList.remove('calc-unavailable');
+        cooperElem.classList.add('calc-available');
+        currentVO2Value = cooperVO2Max.toFixed(2);
+      }
+      
+      // Store the selected method and the unified VO2 max value
+      if (selectedVO2Method) {
+        saveToDatabase('selected_vo2_method', selectedVO2Method);
+        saveToDatabase('unified_vo2max', currentVO2Value);
       }
 
        // Save calculated TABLE values to storage (redundant with field saves but ensures table reflects stored state)
@@ -868,6 +900,8 @@
       saveToDatabase('predicted_daily_calorie_burn', document.getElementById('predicted_daily_calorie_burn').value);
       saveToDatabase('cooper_vo2max', document.getElementById('cooper_vo2max').value);
       saveToDatabase('storer_vo2max', document.getElementById('storer_vo2max').value);
+      saveToDatabase('selected_vo2_method', localStorage.getItem('selected_vo2_method'));
+      saveToDatabase('unified_vo2max', localStorage.getItem('unified_vo2max'));
     }
 
     // **NEW FUNCTION**: Clear data and reload
@@ -952,6 +986,26 @@
          if (input.type === 'number') {
              input.addEventListener('keyup', calculateValues);
          }
+      });
+
+      // Add validation for Cooper method inputs
+      document.getElementById('six_min_distance').addEventListener('change', function() {
+        if (this.value.trim() !== '') {
+          // User is trying to use Cooper method
+          document.getElementById('watts_peak_workload').value = '';
+          saveToDatabase('selected_vo2_method', 'cooper');
+          calculateValues();
+        }
+      });
+
+      // Add validation for Storer method inputs
+      document.getElementById('watts_peak_workload').addEventListener('change', function() {
+        if (this.value.trim() !== '') {
+          // User is trying to use Storer method
+          document.getElementById('six_min_distance').value = '';
+          saveToDatabase('selected_vo2_method', 'storer');
+          calculateValues();
+        }
       });
     });
 
@@ -1190,6 +1244,7 @@
                 ['Ending HR', (document.getElementById('hr_bpm').value || 'N/A') + ' bpm'],
                 ['1-min Post HR', (document.getElementById('post_heart_rate').value || 'N/A') + ' bpm'],
                 ['Bike/Storer VO2 Max', (document.getElementById('storer_vo2max').value || 'N/A') + ' ml/kg/min'],
+                ['Unified VO2 Max', (loadFromDatabase('unified_vo2max') || 'N/A') + ' ml/kg/min']
             ],
             theme: 'grid',
             styles: { fontSize: 9, cellPadding: 2 },

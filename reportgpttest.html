@@ -492,11 +492,15 @@
         const predictedRMR = localStorage.getItem('rmr');
         document.getElementById('summaryRmrValue').value = (measuredRMR && measuredRMR.trim() !== '') ? measuredRMR : (predictedRMR || 'N/A');
 
-         // Summary VO2: Choose one (e.g., Storer if available, else Cooper)
-         const storerVO2 = localStorage.getItem('storer_vo2max');
-         const cooperVO2 = localStorage.getItem('cooper_vo2max');
-         document.getElementById('summaryVo2Value').value = (storerVO2 && storerVO2.trim() !== '') ? storerVO2 : (cooperVO2 || 'N/A');
-
+        // Replace the existing VO2 Max logic with the new unified value
+        const unifiedVO2Max = localStorage.getItem('unified_vo2max');
+        if (unifiedVO2Max && unifiedVO2Max.trim() !== '') {
+            document.getElementById('summaryVo2Value').value = unifiedVO2Max;
+            document.getElementById('tableVo2Value').value = unifiedVO2Max;
+        } else {
+            document.getElementById('summaryVo2Value').value = 'N/A';
+            document.getElementById('tableVo2Value').value = 'N/A';
+        }
 
         // Heart Rate Recovery calculation
         const endingHR = parseFloat(localStorage.getItem('hr_bpm'));
@@ -533,8 +537,6 @@
         populateField('tableTargetGainAggr', 'weight_gain_aggressive');
 
         // Page 8: VO2 Max Graph & Table
-         // Use the same logic as summary for value display
-        document.getElementById('tableVo2Value').value = (storerVO2 && storerVO2.trim() !== '') ? storerVO2 : (cooperVO2 || 'N/A');
         // Percentile needs data - skip for now
 
         // Page 9: Grip Strength Graph
