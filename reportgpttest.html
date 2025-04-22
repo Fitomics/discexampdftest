@@ -312,8 +312,9 @@
         <img class="graph-image" src="VO2Percentile.png" alt="VO2 Graph">
         <div class="table-wrapper">
           <table>
-            <tr><td>Estimated VO₂ Max</td><td><input class="value-field" id="tableVo2Value" readonly><span class="unit-label">ml/kg/min</span></td></tr>
-             <tr><td>Percentile</td><td><input class="value-field" id="tableVo2Percentile" readonly><span class="unit-label">%</span></td></tr>
+            <tr><td>Estimated VO₂ Max (ml/kg/min)</td><td><input class="value-field" id="tableVo2Value" readonly><span class="unit-label"></span></td></tr>
+            <tr><td>Estimated VO₂ Max (METS)</td><td><input class="value-field" id="tableVo2Mets" readonly><span class="unit-label"></span></td></tr>
+            <tr><td>Percentile</td><td><input class="value-field" id="tableVo2Percentile" readonly><span class="unit-label">%</span></td></tr>
           </table>
         </div>
       </div>
@@ -443,6 +444,61 @@
   </div><button onclick="generatePDF()">Download PDF Preview</button>
 
   <script>
+    // Update the existing calculateVo2Percentile function
+    function calculateVo2Percentile(gender, age, vo2Value) {
+      // Return early if any required values are missing
+      if (!gender || !age || !vo2Value || isNaN(parseFloat(vo2Value))) {
+        return 'N/A';
+      }
+      
+      gender = gender.toUpperCase();
+      age = parseInt(age);
+      vo2Value = parseFloat(vo2Value);
+      
+      // Convert VO2 Max to METS for the calculation
+      const vo2ValueMets = vo2Value / 3.5;
+      
+      // Percentile calculation table - same coefficients but will be using METS now
+      const percentileTable = [
+        {gender: 'FEMALE', ageLow: 18, ageHigh: 19, intercept: -38.39370468, slope: 8.408706891},
+        {gender: 'FEMALE', ageLow: 20, ageHigh: 29, intercept: -30.77369941, slope: 8.710278691},
+        {gender: 'FEMALE', ageLow: 30, ageHigh: 39, intercept: -31.6543755, slope: 9.256543442},
+        {gender: 'FEMALE', ageLow: 40, ageHigh: 49, intercept: -31.79589193, slope: 9.657290896},
+        {gender: 'FEMALE', ageLow: 50, ageHigh: 59, intercept: -30.18427375, slope: 10.01526944},
+        {gender: 'FEMALE', ageLow: 60, ageHigh: 69, intercept: -31.79829302, slope: 11.91748344},
+        {gender: 'FEMALE', ageLow: 70, ageHigh: 79, intercept: -30.41205179, slope: 13.75099602},
+        {gender: 'FEMALE', ageLow: 80, ageHigh: 89, intercept: -33.57744583, slope: 16.0898446},
+        {gender: 'MALE', ageLow: 18, ageHigh: 19, intercept: -36.26322582, slope: 7.433576287},
+        {gender: 'MALE', ageLow: 20, ageHigh: 29, intercept: -36.33493979, slope: 7.793652529},
+        {gender: 'MALE', ageLow: 30, ageHigh: 39, intercept: -38.26153919, slope: 8.37609897},
+        {gender: 'MALE', ageLow: 40, ageHigh: 49, intercept: -38.95930276, slope: 8.659028352},
+        {gender: 'MALE', ageLow: 50, ageHigh: 59, intercept: -33.05833684, slope: 8.969738411},
+        {gender: 'MALE', ageLow: 60, ageHigh: 69, intercept: -30.50893082, slope: 9.931446541},
+        {gender: 'MALE', ageLow: 70, ageHigh: 79, intercept: -30.23581148, slope: 11.60411056},
+        {gender: 'MALE', ageLow: 80, ageHigh: 89, intercept: -30.85004941, slope: 13.4229249}
+      ];
+      
+      // Find the appropriate row in the table
+      const row = percentileTable.find(r => 
+        r.gender === gender && age >= r.ageLow && age <= r.ageHigh
+      );
+      
+      if (!row) {
+        return 'N/A'; // No matching row found
+      }
+      
+      // Apply the formula using METS
+      const percentile = row.intercept + (row.slope * vo2ValueMets);
+      
+      // Check if percentile is 100 or greater
+      if (percentile >= 100) {
+        return ">99.9"; // Display special notation for very high percentiles
+      }
+      
+      // Format to 1 decimal place for normal range values
+      return percentile.toFixed(1);
+    }
+
     // Helper function to safely get data and populate fields
     function populateField(elementId, storageKey, options = {}) {
         const element = document.getElementById(elementId);
@@ -549,12 +605,43 @@
 
         // Replace the existing VO2 Max logic with the new unified value
         const unifiedVO2Max = localStorage.getItem('unified_vo2max');
+        const gender = localStorage.getItem('gender');
+        const age = localStorage.getItem('age');
+
         if (unifiedVO2Max && unifiedVO2Max.trim() !== '') {
             document.getElementById('summaryVo2Value').value = unifiedVO2Max;
             document.getElementById('tableVo2Value').value = unifiedVO2Max;
+            
+            // Calculate and populate METS (VO2 Max divided by 3.5)
+            const vo2Value = parseFloat(unifiedVO2Max);
+            if (!isNaN(vo2Value)) {
+                const metsValue = (vo2Value / 3.5).toFixed(1);
+                document.getElementById('tableVo2Mets').value = metsValue;
+                
+                // Calculate and populate percentile using the VO2 Max value
+                // The function will convert to METS internally
+                const percentile = calculateVo2Percentile(gender, age, vo2Value);
+                document.getElementById('tableVo2Percentile').value = percentile;
+
+                // Handle the >99.9 notation for summary note (keep the "%ile" suffix)
+                if (percentile === ">99.9") {
+                  document.getElementById('summaryVo2Note').value = ">99.9%ile";
+                } else if (percentile !== 'N/A') {
+                  document.getElementById('summaryVo2Note').value = `${percentile}%ile`;
+                } else {
+                  document.getElementById('summaryVo2Note').value = 'N/A';
+                }
+            } else {
+                document.getElementById('tableVo2Mets').value = 'N/A';
+                document.getElementById('tableVo2Percentile').value = 'N/A';
+                document.getElementById('summaryVo2Note').value = 'N/A';
+            }
         } else {
             document.getElementById('summaryVo2Value').value = 'N/A';
             document.getElementById('tableVo2Value').value = 'N/A';
+            document.getElementById('tableVo2Mets').value = 'N/A';
+            document.getElementById('tableVo2Percentile').value = 'N/A';
+            document.getElementById('summaryVo2Note').value = 'N/A';
         }
 
         // Heart Rate Recovery calculation
